@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className='container'>
       <div className='display-time'>
-        <span>
+        <span id='timeValue'>
           {Intl.DateTimeFormat('en-US', {
             minute: 'numeric',
             hour: 'numeric',
