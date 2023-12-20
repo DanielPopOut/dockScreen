@@ -98,7 +98,7 @@ a {
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 
 html {
-  font-size: 62.5%;
+  font-size: 40%;
 }
 
 body {
@@ -110,6 +110,11 @@ body {
   align-items: center;
 }
 
+span {
+  text-align: right;
+  display: block;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -118,7 +123,10 @@ body {
 
 .display-time {
   position: fixed;
-  display: flex;
+  /* position:absolute; */
+  top: 0;
+  right: 0;
+  display: block;
   font-size: 5rem;
   font-weight: bold;
   border: 2px solid #ffd868;
