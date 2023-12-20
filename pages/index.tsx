@@ -2,16 +2,23 @@ import React from "react";
 import { useInterval } from "./realTime";
 
 export default function Home() {
-  const [currentTime, setRealTime] = React.useState("");
+  const [currentTime, setRealTime] = React.useState(new Date());
 
   // useEffect is fine to use as well. Don't need useInterval
   useInterval(() => {
-    function handleRealTime(currentTime: React.SetStateAction<string>) {
-      let tempCurrentDate = new Date();
-      currentTime = tempCurrentDate.getHours() + "." + String(tempCurrentDate.getMinutes()).padStart(2, '0') + "." + String(tempCurrentDate.getSeconds()).padStart(2, '0');
-      setRealTime(currentTime);
+    function handleRealTime(currentTime: Date) {
+      setRealTime(new Date());
     }
     handleRealTime(currentTime);
   }, 1000);
-  return <div className="display-time">{currentTime}</div>;
+
+
+  let month = currentTime.toLocaleString('default', { month: 'long' });
+
+  return <div className="container">
+  <div className="display-time">
+    <span>{currentTime.getDate()}, {month} {currentTime.getFullYear()} - </span>
+    <span suppressHydrationWarning>{currentTime.getHours() + "." + String(currentTime.getMinutes()).padStart(2, '0') + "." + String(currentTime.getSeconds()).padStart(2, '0')}</span>
+    </div>
+</div>;
 }
