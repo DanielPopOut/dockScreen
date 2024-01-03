@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
+
+const eventsHappeningNow = [{ title: 'Event1' }, { title: 'Event2' }];
+const eventsComingSoon = [{ title: 'Event4' }, { title: 'Event5' }];
 
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
@@ -20,7 +23,7 @@ export default function Home() {
   }, TIME_TO_GET_REQUEST);
 
   return (
-    <div className='container'>
+    <div className='event_page'>
       <div className='display-time'>
         <span id='timeValue'>
           {Intl.DateTimeFormat('en-US', {
@@ -37,6 +40,35 @@ export default function Home() {
           }).format(currentTime)}
         </span>
       </div>
+      <div className='left_section'>
+        <Section title='Happening right now'>
+          <div className='event_section__list'>
+            {eventsHappeningNow.map((event) => {
+              return <div key={event.title}>{event.title}</div>;
+            })}
+          </div>
+        </Section>
+        <Section title='Coming soon'>
+          <div className='event_section__list'>
+            {eventsComingSoon.map((event) => {
+              return <div key={event.title}>{event.title}</div>;
+            })}
+          </div>
+        </Section>
+      </div>
     </div>
   );
 }
+
+const Section = (props: PropsWithChildren<{ title: string }>) => {
+  return (
+    <section className='event_section'>
+      <SectionTitle>{props.title}</SectionTitle>
+      {props.children}
+    </section>
+  );
+};
+
+const SectionTitle = ({ children }: PropsWithChildren) => {
+  return <div className='event_section__title'>{children}</div>;
+};
