@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
@@ -33,23 +33,34 @@ export default function Home() {
         </span>
       </div>
       <div className='left_section'>
-        <section className='event_section'>
-          <div className='event_section__title'>Happening right now</div>
+        <Section title='Happening right now'>
           <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
               return <div key={event.title}>{event.title}</div>;
             })}
           </div>
-        </section>
-        <section className='event_section'>
-          <div className='event_section__title'>Coming soon</div>
+        </Section>
+        <Section title='Coming soon'>
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
               return <div key={event.title}>{event.title}</div>;
             })}
           </div>
-        </section>
+        </Section>
       </div>
     </div>
   );
 }
+
+const Section = (props: PropsWithChildren<{ title: string }>) => {
+  return (
+    <section className='event_section'>
+      <SectionTitle>{props.title}</SectionTitle>
+      {props.children}
+    </section>
+  );
+};
+
+const SectionTitle = ({ children }: PropsWithChildren) => {
+  return <div className='event_section__title'>{children}</div>;
+};
