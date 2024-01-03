@@ -15,7 +15,7 @@ export default function Home() {
   }, TIME_TO_REFRESH);
 
   return (
-    <div className='container'>
+    <div className='event_page'>
       <div className='display-time'>
         <span id='timeValue'>
           {Intl.DateTimeFormat('en-US', {
@@ -32,20 +32,22 @@ export default function Home() {
           }).format(currentTime)}
         </span>
       </div>
-      <div>
-        <section>
-          <div>Happening right now</div>
-          <div>
+      <div className='left_section'>
+        <section className='event_section'>
+          <div className='event_section__title'>Happening right now</div>
+          <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
               return <div key={event.title}>{event.title}</div>;
             })}
           </div>
         </section>
-        <section>
-          <div>Coming soon</div>
-          {eventsComingSoon.map((event) => {
-            return <div key={event.title}>{event.title}</div>;
-          })}
+        <section className='event_section'>
+          <div className='event_section__title'>Coming soon</div>
+          <div className='event_section__list'>
+            {eventsComingSoon.map((event) => {
+              return <div key={event.title}>{event.title}</div>;
+            })}
+          </div>
         </section>
       </div>
     </div>
