@@ -3,6 +3,9 @@ import { useInterval } from './realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 
+const eventsHappeningNow = [{ title: 'Event1' }, { title: 'Event2' }];
+const eventsComingSoon = [{ title: 'Event4' }, { title: 'Event5' }];
+
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
 
@@ -28,6 +31,22 @@ export default function Home() {
             day: 'numeric',
           }).format(currentTime)}
         </span>
+      </div>
+      <div>
+        <section>
+          <div>Happening right now</div>
+          <div>
+            {eventsHappeningNow.map((event) => {
+              return <div key={event.title}>{event.title}</div>;
+            })}
+          </div>
+        </section>
+        <section>
+          <div>Coming soon</div>
+          {eventsComingSoon.map((event) => {
+            return <div key={event.title}>{event.title}</div>;
+          })}
+        </section>
       </div>
     </div>
   );

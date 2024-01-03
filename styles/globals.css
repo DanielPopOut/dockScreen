@@ -97,10 +97,6 @@ a {
 /* Shamelessly steal Style From Here https://codepen.io/WhisnuYs/pen/oNLBEvv */
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 
-html {
-  font-size: 40%;
-}
-
 body {
   font-family: "Lato", sans-serif;
   background: #272727;
@@ -127,7 +123,7 @@ span {
   top: 0;
   right: 0;
   display: block;
-  font-size: 5rem;
+  font-size: 1rem;
   font-weight: bold;
   border: 2px solid #ffd868;
   padding: 10px 20px;
@@ -145,5 +141,5 @@ span {
 }
 
 #timeValue {
-  font-size: 8rem;
+  font-size: 2rem;
 }
