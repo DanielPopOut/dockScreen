@@ -130,3 +130,38 @@ span {
   flex: 1 0 0;
   align-self: stretch;
 }
+
+.event {
+    background: #ffffff;
+    border: 2px solid #dddddd;
+    border-radius: 5px;
+    width: 500px;
+    height: 80px;
+    align-content: space-between;
+  }
+  
+  .eventDetails {
+    display: flex;
+    grid-template-columns: 300px 200px;
+    height: 30px;
+    justify-content: space-between;
+  }
+  
+  .eventTitle {
+    align-self: center;
+    width: 300px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .eventTime {
+    align-self: center;
+    font-size: 14px;
+    margin-left: auto;
+    margin-right: 0px;
+  }
+  
+  .eventDescription {
+    font-size: 16px;
+    align-self: end;
+  }
