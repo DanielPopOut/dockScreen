@@ -10,7 +10,7 @@ const eventsHappeningNow = [{
         name:"Friday night breakdancing",
         timeStart:"12:00",
         timeEnd:"14:00",
-        description:"Breakdancing on friday night of course!" 
+        description:"Breakdancing on friday night of course! Breakdancing on friday night of course! Breakdancing on friday night of course!Breakdancing on friday night of course!Breakdancing on friday night of course!" 
     }, { 
         location:"3rd floor",
         name:"Friday night crying",

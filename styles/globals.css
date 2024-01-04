@@ -136,26 +136,24 @@ span {
     border: 2px solid #dddddd;
     border-radius: 5px;
     width: 500px;
-    height: 80px;
+    min-height: 80px;
     align-content: space-between;
+    padding: 5px 10px;
   }
   
   .eventDetails {
     display: flex;
     grid-template-columns: 300px 200px;
-    height: 30px;
     justify-content: space-between;
   }
   
   .eventTitle {
-    align-self: center;
     width: 300px;
     font-size: 20px;
     font-weight: bold;
   }
   
   .eventTime {
-    align-self: center;
     font-size: 14px;
     margin-left: auto;
     margin-right: 0px;
