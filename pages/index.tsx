@@ -1,23 +1,27 @@
+import Event from '@/event';
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
-import Event from '@/event';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
 
-const eventsHappeningNow = [{ 
-        location:"3rd floor",
-        name:"Friday night breakdancing",
-        timeStart:"12:00",
-        timeEnd:"14:00",
-        description:"Breakdancing on friday night of course! Breakdancing on friday night of course! Breakdancing on friday night of course!Breakdancing on friday night of course!Breakdancing on friday night of course!" 
-    }, { 
-        location:"3rd floor",
-        name:"Friday night crying",
-        timeStart:"12:00",
-        timeEnd:"14:00",
-        description:"crying on friday night of course!" 
-    }];
+const eventsHappeningNow = [
+  {
+    location: '3rd floor',
+    name: 'Friday night breakdancing',
+    timeStart: '12:00',
+    timeEnd: '14:00',
+    description:
+      'Breakdancing on friday night of course! Breakdancing on friday night of course! Breakdancing on friday night of course!Breakdancing on friday night of course!Breakdancing on friday night of course!',
+  },
+  {
+    location: '3rd floor',
+    name: 'Friday night crying',
+    timeStart: '12:00',
+    timeEnd: '14:00',
+    description: 'crying on friday night of course!',
+  },
+];
 const eventsComingSoon = [{ title: 'Event4' }, { title: 'Event5' }];
 
 export default function Home() {
@@ -31,8 +35,8 @@ export default function Home() {
   const [currentData, setData] = React.useState({});
   useInterval(() => {
     fetch('/api/getEvents')
-    .then(res => res.json())
-    .then(resultData => setData(resultData))
+      .then((res) => res.json())
+      .then((resultData) => setData(resultData));
   }, TIME_TO_GET_REQUEST);
 
   return (
@@ -57,7 +61,7 @@ export default function Home() {
         <Section title='Happening right now'>
           <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
-              return <Event event={event}/>;
+              return <Event key={event.name} event={event} />;
             })}
           </div>
         </Section>
