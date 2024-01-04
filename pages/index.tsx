@@ -1,10 +1,23 @@
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
+import Event from '@/event';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
 
-const eventsHappeningNow = [{ title: 'Event1' }, { title: 'Event2' }];
+const eventsHappeningNow = [{ 
+        location:"3rd floor",
+        name:"Friday night breakdancing",
+        timeStart:"12:00",
+        timeEnd:"14:00",
+        description:"Breakdancing on friday night of course!" 
+    }, { 
+        location:"3rd floor",
+        name:"Friday night crying",
+        timeStart:"12:00",
+        timeEnd:"14:00",
+        description:"crying on friday night of course!" 
+    }];
 const eventsComingSoon = [{ title: 'Event4' }, { title: 'Event5' }];
 
 export default function Home() {
@@ -44,7 +57,7 @@ export default function Home() {
         <Section title='Happening right now'>
           <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
-              return <div key={event.title}>{event.title}</div>;
+              return <Event event={event}/>;
             })}
           </div>
         </Section>
