@@ -1,23 +1,27 @@
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
 import Event from '@/event';
+import { json } from 'stream/consumers';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
 
-const eventsHappeningNow = [{ 
-        location:"3rd floor",
-        name:"Friday night breakdancing",
-        timeStart:"12:00",
-        timeEnd:"14:00",
-        description:"Breakdancing on friday night of course! Breakdancing on friday night of course! Breakdancing on friday night of course!Breakdancing on friday night of course!Breakdancing on friday night of course!" 
-    }, { 
-        location:"3rd floor",
-        name:"Friday night crying",
-        timeStart:"12:00",
-        timeEnd:"14:00",
-        description:"crying on friday night of course!" 
-    }];
+function GetEventsFromResult(resultData: any) {
+    console.log(resultData)
+    let events = [];
+    for (let i=0; i<Object.keys(resultData).length; i++) {
+        const booking = resultData[i]
+        events.push({
+            location: "TODO: Obtain location from API",
+            name: "TODO: Obtain member from API",
+            timeStart: booking["start"]["dateTime"],
+            timeEnd: booking["end"]["dateTime"],
+            description: booking["summary"]
+        });
+    }
+    return events;
+}
+
 const eventsComingSoon = [{ title: 'Event4' }, { title: 'Event5' }];
 
 export default function Home() {
@@ -34,6 +38,8 @@ export default function Home() {
     .then(res => res.json())
     .then(resultData => setData(resultData))
   }, TIME_TO_GET_REQUEST);
+
+  const eventsHappeningNow = GetEventsFromResult(currentData);
 
   return (
     <div className='event_page'>
