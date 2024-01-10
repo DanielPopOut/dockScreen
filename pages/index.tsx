@@ -12,8 +12,8 @@ function GetEventsFromResult(resultData: any) {
     for (let i=0; i<Object.keys(resultData).length; i++) {
         const booking = resultData[i]
         events.push({
-            location: "TODO: Obtain location from API",
-            name: "TODO: Obtain member from API",
+            location: booking["office"],
+            name: booking["member"],
             timeStart: booking["start"]["dateTime"],
             timeEnd: booking["end"]["dateTime"],
             description: booking["summary"]
