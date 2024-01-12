@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
 import Event from '@/event';
 import { json } from 'stream/consumers';
+import type { OfficeRnDEvent } from './dataProcessing/processEvents';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
@@ -22,8 +23,6 @@ function GetEventsFromResult(resultData: any) {
     return events;
 }
 
-const eventsComingSoon = [{ title: 'Event4' }, { title: 'Event5' }];
-
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
 
@@ -32,14 +31,20 @@ export default function Home() {
     setRealTime(new Date());
   }, TIME_TO_REFRESH);
 
-  const [currentData, setData] = React.useState({});
+  const [eventData, setEventData] = React.useState(
+    { 
+      started: Array<OfficeRnDEvent>(),
+      upcoming: Array<OfficeRnDEvent>()
+    }
+  );
   useInterval(() => {
     fetch('/api/getEvents')
     .then(res => res.json())
-    .then(resultData => setData(resultData))
+    .then(apiEventData => setEventData(apiEventData))
   }, TIME_TO_GET_REQUEST);
 
-  const eventsHappeningNow = GetEventsFromResult(currentData);
+  const eventsHappeningNow = GetEventsFromResult(eventData["started"]);
+  const eventsComingSoon = GetEventsFromResult(eventData["upcoming"]);
 
   return (
     <div className='event_page'>
@@ -70,7 +75,7 @@ export default function Home() {
         <Section title='Coming soon'>
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
-              return <div key={event.title}>{event.title}</div>;
+              return <Event event={event}/>;
             })}
           </div>
         </Section>

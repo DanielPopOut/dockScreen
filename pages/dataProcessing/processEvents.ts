@@ -1,4 +1,4 @@
-type OfficeRnDEvent = {
+export type OfficeRnDEvent = {
     start: {dateTime: string};
     end: {dateTime: string};
 }
