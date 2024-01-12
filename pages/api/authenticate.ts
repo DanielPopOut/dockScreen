@@ -12,7 +12,7 @@ const AuthOptions = {
   })
 };
 
-export const AuthOption = (token: string) => {
+export const OptionWithToken = (token: string) => {
   return {
     method: 'GET',
     headers: {
