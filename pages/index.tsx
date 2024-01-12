@@ -12,10 +12,10 @@ function GetEventsFromResult(resultData: any) {
     for (let i=0; i<Object.keys(resultData).length; i++) {
         const booking = resultData[i]
         events.push({
-            location: booking["office"],
+            location: booking["resourceId"],
             name: booking["member"],
-            timeStart: booking["start"]["dateTime"],
-            timeEnd: booking["end"]["dateTime"],
+            timeStart: new Date(booking["start"]["dateTime"]).toLocaleTimeString(),
+            timeEnd: new Date(booking["end"]["dateTime"]).toLocaleTimeString(),
             description: booking["summary"]
         });
     }

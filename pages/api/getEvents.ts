@@ -40,11 +40,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const date = new Date();
-  const nowDate = date.toISOString().split('T')[0];
-  date.setDate(date.getDate() + 1);
-  const tomorrowDate = date.toISOString().split('T')[0];
+  const nowDate = date.toLocaleDateString();
+  date.setDate(date.getDate() + 2);
+  const tomorrowDate = date.toLocaleDateString();
+  console.log(nowDate, tomorrowDate)
   let fetchedData = await fetch('https://identity.officernd.com/oauth/token', options);
   const JSONFetched = await fetchedData.json();
   const events = await getEvent(JSONFetched.access_token, nowDate, tomorrowDate);
-  res.status(200).json(events);
+  const filteredEvents = events.filter((event: any) => {
+    return new Date(event["start"]["dateTime"]).toLocaleDateString() == nowDate
+  });
+  res.status(200).json(filteredEvents.sort(function(a: any,b: any) {
+    return new Date(a["start"]["dateTime"]).getTime()- new Date(b["start"]["dateTime"]).getTime()
+  }));
 }
