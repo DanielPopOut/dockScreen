@@ -1,26 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { OfficeRnDService } from '../../src/services/OfficeRnDService';
 import {
   SeparateStartedAndUpcomingEvents,
   TrimExpiredEvents,
 } from '../dataProcessing/processEvents';
-import { Authenticate, GetWithToken } from './authenticate';
-
-export async function getEvent(
-  token: string,
-  dateStart: string,
-  dateEnd: string,
-) {
-  let fetchedData = await fetch(
-    'https://app.officernd.com/api/v1/organizations/thedock/bookings?seriesStart.%24gte=' +
-      dateStart +
-      '&seriesStart.%24lte=' +
-      dateEnd,
-    GetWithToken(token),
-  );
-  const JSONFetched = await fetchedData.json();
-  return JSONFetched;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,12 +15,8 @@ export default async function handler(
   date.setDate(date.getDate() + 2);
   const tomorrowDate = date.toLocaleDateString();
   console.log(nowDate, tomorrowDate);
-  const authResults = await Authenticate();
-  const events = await getEvent(
-    authResults.access_token,
-    nowDate,
-    tomorrowDate,
-  );
+  const officeRNDService = new OfficeRnDService();
+  const events = await officeRNDService.getEvent(nowDate, tomorrowDate);
   const todayEvents = events.filter((event: any) => {
     return new Date(event['start']['dateTime']).toLocaleDateString() == nowDate;
   });
