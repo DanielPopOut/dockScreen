@@ -1,28 +1,27 @@
-import Event from '@/event';
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
+import Event from '@/event';
+import { json } from 'stream/consumers';
+import type { OfficeRnDEvent } from './dataProcessing/processEvents';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
 
-const eventsHappeningNow = [
-  {
-    location: '3rd floor',
-    name: 'Friday night breakdancing',
-    timeStart: '12:00',
-    timeEnd: '14:00',
-    description:
-      'Breakdancing on friday night of course! Breakdancing on friday night of course! Breakdancing on friday night of course!Breakdancing on friday night of course!Breakdancing on friday night of course!',
-  },
-  {
-    location: '3rd floor',
-    name: 'Friday night crying',
-    timeStart: '12:00',
-    timeEnd: '14:00',
-    description: 'crying on friday night of course!',
-  },
-];
-const eventsComingSoon = [{ title: 'Event4' }, { title: 'Event5' }];
+function GetEventsFromResult(resultData: any) {
+    console.log(resultData)
+    let events = [];
+    for (let i=0; i<Object.keys(resultData).length; i++) {
+        const booking = resultData[i]
+        events.push({
+            location: booking["resourceId"],
+            name: booking["member"],
+            timeStart: new Date(booking["start"]["dateTime"]).toLocaleTimeString(),
+            timeEnd: new Date(booking["end"]["dateTime"]).toLocaleTimeString(),
+            description: booking["summary"]
+        });
+    }
+    return events;
+}
 
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
@@ -32,12 +31,20 @@ export default function Home() {
     setRealTime(new Date());
   }, TIME_TO_REFRESH);
 
-  const [currentData, setData] = React.useState({});
+  const [eventData, setEventData] = React.useState(
+    { 
+      started: Array<OfficeRnDEvent>(),
+      upcoming: Array<OfficeRnDEvent>()
+    }
+  );
   useInterval(() => {
     fetch('/api/getEvents')
-      .then((res) => res.json())
-      .then((resultData) => setData(resultData));
+    .then(res => res.json())
+    .then(apiEventData => setEventData(apiEventData))
   }, TIME_TO_GET_REQUEST);
+
+  const eventsHappeningNow = GetEventsFromResult(eventData["started"]);
+  const eventsComingSoon = GetEventsFromResult(eventData["upcoming"]);
 
   return (
     <div className='event_page'>
@@ -61,14 +68,14 @@ export default function Home() {
         <Section title='Happening right now'>
           <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
-              return <Event key={event.name} event={event} />;
+              return <Event event={event}/>;
             })}
           </div>
         </Section>
         <Section title='Coming soon'>
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
-              return <div key={event.title}>{event.title}</div>;
+              return <Event event={event}/>;
             })}
           </div>
         </Section>
