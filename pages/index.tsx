@@ -3,17 +3,22 @@ import { useInterval } from './realTime';
 import Event from '@/event';
 import { json } from 'stream/consumers';
 import type { OfficeRnDEvent } from './dataProcessing/processEvents';
+import type { MeetingRoomInfo } from './dataProcessing/meetingRoomProcessing';
+import { ResolveMeetingRoomName } from './dataProcessing/meetingRoomProcessing';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
 
-function GetEventsFromResult(resultData: any) {
-    console.log(resultData)
+function GetEventsFromResult(
+  eventData: any, 
+  meetingRoomData: Array<MeetingRoomInfo>
+) {
+    console.log(eventData)
     let events = [];
-    for (let i=0; i<Object.keys(resultData).length; i++) {
-        const booking = resultData[i]
+    for (let i=0; i<Object.keys(eventData).length; i++) {
+        const booking = eventData[i]
         events.push({
-            location: booking["resourceId"],
+            location: ResolveMeetingRoomName(booking["resourceId"], meetingRoomData),
             name: booking["member"],
             timeStart: new Date(booking["start"]["dateTime"]).toLocaleTimeString(),
             timeEnd: new Date(booking["end"]["dateTime"]).toLocaleTimeString(),
@@ -37,14 +42,19 @@ export default function Home() {
       upcoming: Array<OfficeRnDEvent>()
     }
   );
+  const [meetingRoomData, setMeetingRoomData] = React.useState(Array<MeetingRoomInfo>())
   useInterval(() => {
     fetch('/api/getEvents')
     .then(res => res.json())
-    .then(apiEventData => setEventData(apiEventData))
+    .then(apiEventData => setEventData(apiEventData));
+
+    fetch('/api/getMeetingRooms')
+    .then(res => res.json())
+    .then(apiMeetingRoomData => setMeetingRoomData(apiMeetingRoomData))
   }, TIME_TO_GET_REQUEST);
 
-  const eventsHappeningNow = GetEventsFromResult(eventData["started"]);
-  const eventsComingSoon = GetEventsFromResult(eventData["upcoming"]);
+  const eventsHappeningNow = GetEventsFromResult(eventData["started"], meetingRoomData);
+  const eventsComingSoon = GetEventsFromResult(eventData["upcoming"], meetingRoomData);
 
   return (
     <div className='event_page'>
