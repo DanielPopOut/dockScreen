@@ -33,15 +33,14 @@ export class OfficeRnDService {
         '&seriesStart.%24lte=' +
         dateEnd,
     );
-    const JSONFetched = await fetchedData.json();
-    return JSONFetched;
+    return fetchedData;
   };
 
   getMeetingRooms = async () => {
     let fetchedData = await this.fetchWithToken(
       `${this.BASE_API_URL}/resources?type=meeting_room`,
     );
-    return await fetchedData.json();
+    return fetchedData;
   };
 }
 
