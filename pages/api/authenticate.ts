@@ -12,7 +12,8 @@ const AuthOptions = {
   })
 };
 
-export const OptionWithToken = (token: string) => {
+export const GetWithToken = (token: string) => {
+  console.log(token)
   return {
     method: 'GET',
     headers: {

@@ -1,14 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { TrimExpiredEvents, SeparateStartedAndUpcomingEvents } from '../dataProcessing/processEvents';
-import { Authenticate, OptionWithToken } from './authenticate';
+import { Authenticate, GetWithToken } from './authenticate';
 
 export async function getEvent(
   token: string,
   dateStart: string,
   dateEnd: string
 ) {
-  let fetchedData = await fetch('https://app.officernd.com/api/v1/organizations/thedock/bookings?seriesStart.%24gte=' + dateStart + '&seriesStart.%24lte=' + dateEnd, OptionWithToken(token));
+  let fetchedData = await fetch('https://app.officernd.com/api/v1/organizations/thedock/bookings?seriesStart.%24gte=' + dateStart + '&seriesStart.%24lte=' + dateEnd, GetWithToken(token));
   const JSONFetched = await fetchedData.json();
   return JSONFetched;
 }
