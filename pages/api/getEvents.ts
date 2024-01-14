@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { OfficeRnDService } from '../../src/services/OfficeRnDService';
+import { EventBriteService } from '../../src/services/EventBriteService';
 import {
   SeparateStartedAndUpcomingEvents,
   TrimExpiredEvents,
@@ -16,7 +17,12 @@ export default async function handler(
   const tomorrowDate = date.toLocaleDateString();
   console.log(nowDate, tomorrowDate);
   const officeRNDService = new OfficeRnDService();
+  const eventBriteService = new EventBriteService();
+  
   const events = await officeRNDService.getEvent(nowDate, tomorrowDate);
+  const eventBriteEvents = await eventBriteService.getEventBriteEventsByOrg();
+  console.log(eventBriteEvents);
+
   const todayEvents = events.filter((event: any) => {
     return new Date(event['start']['dateTime']).toLocaleDateString() == nowDate;
   });
