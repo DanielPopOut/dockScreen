@@ -1,7 +1,6 @@
 import Event from '@/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
-import type { MeetingRoomInfo } from './dataProcessing/meetingRoomProcessing';
 import { useInterval } from './realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
@@ -19,17 +18,10 @@ export default function Home() {
     started: Array<AppBooking>(),
     upcoming: Array<AppBooking>(),
   });
-  const [meetingRoomData, setMeetingRoomData] = React.useState(
-    Array<MeetingRoomInfo>(),
-  );
   useInterval(() => {
     fetch('/api/getEvents')
       .then((res) => res.json())
       .then((apiEventData) => setEventData(apiEventData));
-
-    fetch('/api/getMeetingRooms')
-      .then((res) => res.json())
-      .then((apiMeetingRoomData) => setMeetingRoomData(apiMeetingRoomData));
   }, TIME_TO_GET_REQUEST);
 
   const eventsHappeningNow = eventData.started;

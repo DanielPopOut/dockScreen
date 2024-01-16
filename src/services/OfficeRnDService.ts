@@ -6,7 +6,7 @@ import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
   access_token = '';
-  authenticate = async () => {
+  private authenticate = async () => {
     if (this.access_token) {
       return this.access_token;
     }
@@ -19,7 +19,7 @@ export class OfficeRnDService {
     return this.access_token;
   };
 
-  fetchWithToken = async <T extends {}>(url: string) => {
+  private fetchWithToken = async <T extends {}>(url: string) => {
     const token = await this.authenticate();
     let fetchedData = await fetch(url, {
       method: 'GET',
@@ -31,7 +31,7 @@ export class OfficeRnDService {
     return (await fetchedData.json()) as T;
   };
 
-  getEvent = async (dateStart: string, dateEnd: string) => {
+  private getEvents = async (dateStart: string, dateEnd: string) => {
     let fetchedData = await this.fetchWithToken<OfficeRndBooking[]>(
       `${this.BASE_API_URL}/bookings?seriesStart.$gte=` +
         dateStart +
@@ -46,7 +46,7 @@ export class OfficeRnDService {
     dateEnd: string,
   ): Promise<AppBooking[]> => {
     const meetingRoomsById = await this.getMeetingRoomsWithFloor();
-    const events = await this.getEvent(dateStart, dateEnd);
+    const events = await this.getEvents(dateStart, dateEnd);
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
       return {
@@ -76,7 +76,7 @@ export class OfficeRnDService {
     return keyBy(meetingRoomsWithFloor, '_id');
   };
 
-  getMeetingRooms = async () => {
+  private getMeetingRooms = async () => {
     let meetingRooms = await this.fetchWithToken<OfficeRndMeetingRoom[]>(
       `${this.BASE_API_URL}/resources?type=meeting_room`,
     );
