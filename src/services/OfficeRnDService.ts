@@ -1,5 +1,5 @@
 import { keyBy } from '../helpers/keyBy';
-import { OfficeRndBooking } from './OfficeRnDTypes/Booking';
+import { AppBooking, OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
 
@@ -41,16 +41,39 @@ export class OfficeRnDService {
     return fetchedData;
   };
 
-  getMeetingRoomsWithFloor = async () => {
+  getEventsWithMeetingRooms = async (
+    dateStart: string,
+    dateEnd: string,
+  ): Promise<AppBooking[]> => {
+    const meetingRoomsById = await this.getMeetingRoomsWithFloor();
+    const events = await this.getEvent(dateStart, dateEnd);
+    const eventsWithMeetingRooms = events.map((event) => {
+      const meetingRoom = meetingRoomsById[event.resourceId];
+      return {
+        _id: event._id,
+        summary: event.summary,
+        title: event.summary,
+        endDateTime: event.end?.dateTime,
+        startDateTime: event.start?.dateTime,
+        timezone: event.timezone,
+        room: meetingRoom?.name || 'no meeting room',
+        floor: meetingRoom?.floor || 'no floor',
+      } as AppBooking;
+    });
+    return eventsWithMeetingRooms;
+  };
+
+  private getMeetingRoomsWithFloor = async () => {
     const floorsById = await this.getFloorsById();
     const meetingRooms = await this.getMeetingRooms();
-    return meetingRooms.map((meetingRoom) => {
+    const meetingRoomsWithFloor = meetingRooms.map((meetingRoom) => {
       const floor = floorsById[meetingRoom.room];
       return {
         ...meetingRoom,
         floor: floor?.name || 'no floor',
       };
     });
+    return keyBy(meetingRoomsWithFloor, '_id');
   };
 
   getMeetingRooms = async () => {
