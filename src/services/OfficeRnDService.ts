@@ -1,3 +1,5 @@
+import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
+
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
   access_token = '';
@@ -14,7 +16,7 @@ export class OfficeRnDService {
     return this.access_token;
   };
 
-  fetchWithToken = async (url: string) => {
+  fetchWithToken = async <T extends {}>(url: string) => {
     const token = await this.authenticate();
     let fetchedData = await fetch(url, {
       method: 'GET',
@@ -23,7 +25,7 @@ export class OfficeRnDService {
         Authorization: 'Bearer ' + token,
       },
     });
-    return await fetchedData.json();
+    return (await fetchedData.json()) as T;
   };
 
   getEvent = async (dateStart: string, dateEnd: string) => {
@@ -39,6 +41,13 @@ export class OfficeRnDService {
   getMeetingRooms = async () => {
     let fetchedData = await this.fetchWithToken(
       `${this.BASE_API_URL}/resources?type=meeting_room`,
+    );
+    return fetchedData;
+  };
+
+  private getFloors = async () => {
+    let fetchedData = await this.fetchWithToken<OfficeRnDFloor[]>(
+      `${this.BASE_API_URL}/resources/floors`,
     );
     return fetchedData;
   };
