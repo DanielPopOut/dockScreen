@@ -1,3 +1,4 @@
+import { OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
 
@@ -30,7 +31,7 @@ export class OfficeRnDService {
   };
 
   getEvent = async (dateStart: string, dateEnd: string) => {
-    let fetchedData = await this.fetchWithToken(
+    let fetchedData = await this.fetchWithToken<OfficeRndBooking[]>(
       `${this.BASE_API_URL}/bookings?seriesStart.$gte=` +
         dateStart +
         '&seriesStart.$lte=' +
