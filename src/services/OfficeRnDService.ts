@@ -1,4 +1,5 @@
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
+import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
@@ -30,16 +31,16 @@ export class OfficeRnDService {
 
   getEvent = async (dateStart: string, dateEnd: string) => {
     let fetchedData = await this.fetchWithToken(
-      `${this.BASE_API_URL}/bookings?seriesStart.%24gte=` +
+      `${this.BASE_API_URL}/bookings?seriesStart.$gte=` +
         dateStart +
-        '&seriesStart.%24lte=' +
+        '&seriesStart.$lte=' +
         dateEnd,
     );
     return fetchedData;
   };
 
   getMeetingRooms = async () => {
-    let fetchedData = await this.fetchWithToken(
+    let fetchedData = await this.fetchWithToken<OfficeRndMeetingRoom[]>(
       `${this.BASE_API_URL}/resources?type=meeting_room`,
     );
     return fetchedData;
