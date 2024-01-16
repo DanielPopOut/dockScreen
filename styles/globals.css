@@ -139,12 +139,17 @@ span {
   min-height: 80px;
   align-content: space-between;
   padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .eventDetails {
   display: flex;
   grid-template-columns: 300px 200px;
   justify-content: space-between;
+  display: flex;
+  align-items: center;
 }
 
 .eventTitle {
@@ -161,5 +166,4 @@ span {
 
 .eventDescription {
   font-size: 16px;
-  align-self: end;
 }
