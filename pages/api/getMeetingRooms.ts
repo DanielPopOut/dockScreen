@@ -7,6 +7,6 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const officeRNDService = new OfficeRnDService();
-  const meetingRooms = await officeRNDService.getMeetingRooms();
+  const meetingRooms = await officeRNDService.getMeetingRoomsWithFloor();
   res.status(200).json(meetingRooms);
 }

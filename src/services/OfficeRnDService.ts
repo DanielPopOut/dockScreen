@@ -1,3 +1,4 @@
+import { keyBy } from '../helpers/keyBy';
 import { OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
@@ -40,18 +41,30 @@ export class OfficeRnDService {
     return fetchedData;
   };
 
-  getMeetingRooms = async () => {
-    let fetchedData = await this.fetchWithToken<OfficeRndMeetingRoom[]>(
-      `${this.BASE_API_URL}/resources?type=meeting_room`,
-    );
-    return fetchedData;
+  getMeetingRoomsWithFloor = async () => {
+    const floorsById = await this.getFloorsById();
+    const meetingRooms = await this.getMeetingRooms();
+    return meetingRooms.map((meetingRoom) => {
+      const floor = floorsById[meetingRoom.room];
+      return {
+        ...meetingRoom,
+        floor: floor?.name || 'no floor',
+      };
+    });
   };
 
-  private getFloors = async () => {
-    let fetchedData = await this.fetchWithToken<OfficeRnDFloor[]>(
-      `${this.BASE_API_URL}/resources/floors`,
+  getMeetingRooms = async () => {
+    let meetingRooms = await this.fetchWithToken<OfficeRndMeetingRoom[]>(
+      `${this.BASE_API_URL}/resources?type=meeting_room`,
     );
-    return fetchedData;
+    return meetingRooms;
+  };
+
+  private getFloorsById = async () => {
+    let floorsArray = await this.fetchWithToken<OfficeRnDFloor[]>(
+      `${this.BASE_API_URL}/floors`,
+    );
+    return keyBy(floorsArray, '_id');
   };
 }
 
