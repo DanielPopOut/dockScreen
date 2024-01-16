@@ -83,14 +83,14 @@ export default function Home() {
         <Section title='Happening right now'>
           <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
-              return <Event event={event} />;
+              return <Event event={event} key={event._id} />;
             })}
           </div>
         </Section>
         <Section title='Coming soon'>
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
-              return <Event event={event} />;
+              return <Event event={event} key={event._id} />;
             })}
           </div>
         </Section>
