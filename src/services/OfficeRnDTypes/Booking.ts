@@ -19,6 +19,7 @@ export type AppBooking = {
   timezone: string;
   room: string;
   floor: string;
+  summary: string;
 };
 
 // Below is an exmaple of the Booking type from the OfficeRnD API
