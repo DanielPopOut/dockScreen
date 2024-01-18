@@ -1,31 +1,10 @@
 import Event from '@/event';
+import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
-import type { MeetingRoomInfo } from './dataProcessing/meetingRoomProcessing';
-import { ResolveMeetingRoomName } from './dataProcessing/meetingRoomProcessing';
-import type { OfficeRnDEvent } from './dataProcessing/processEvents';
 import { useInterval } from './realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
-
-function GetEventsFromResult(
-  eventData: any,
-  meetingRoomData: Array<MeetingRoomInfo>,
-) {
-  console.log(eventData);
-  let events = [];
-  for (let i = 0; i < Object.keys(eventData).length; i++) {
-    const booking = eventData[i];
-    events.push({
-      location: ResolveMeetingRoomName(booking['resourceId'], meetingRoomData),
-      name: booking['member'],
-      timeStart: new Date(booking['start']['dateTime']).toLocaleTimeString(),
-      timeEnd: new Date(booking['end']['dateTime']).toLocaleTimeString(),
-      description: booking['summary'],
-    });
-  }
-  return events;
-}
 
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
@@ -36,30 +15,17 @@ export default function Home() {
   }, TIME_TO_REFRESH);
 
   const [eventData, setEventData] = React.useState({
-    started: Array<OfficeRnDEvent>(),
-    upcoming: Array<OfficeRnDEvent>(),
+    started: Array<AppBooking>(),
+    upcoming: Array<AppBooking>(),
   });
-  const [meetingRoomData, setMeetingRoomData] = React.useState(
-    Array<MeetingRoomInfo>(),
-  );
   useInterval(() => {
     fetch('/api/getEvents')
       .then((res) => res.json())
       .then((apiEventData) => setEventData(apiEventData));
-
-    fetch('/api/getMeetingRooms')
-      .then((res) => res.json())
-      .then((apiMeetingRoomData) => setMeetingRoomData(apiMeetingRoomData));
   }, TIME_TO_GET_REQUEST);
 
-  const eventsHappeningNow = GetEventsFromResult(
-    eventData['started'],
-    meetingRoomData,
-  );
-  const eventsComingSoon = GetEventsFromResult(
-    eventData['upcoming'],
-    meetingRoomData,
-  );
+  const eventsHappeningNow = eventData.started;
+  const eventsComingSoon = eventData.upcoming;
 
   return (
     <div className='event_page'>
@@ -83,14 +49,14 @@ export default function Home() {
         <Section title='Happening right now'>
           <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
-              return <Event event={event} />;
+              return <Event event={event} key={event._id} />;
             })}
           </div>
         </Section>
         <Section title='Coming soon'>
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
-              return <Event event={event} />;
+              return <Event event={event} key={event._id} />;
             })}
           </div>
         </Section>
