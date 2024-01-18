@@ -21,7 +21,7 @@ export default async function handler(
     tomorrowDate,
   );
   const todayEvents = events.filter((event: any) => {
-    return new Date(event['start']['dateTime']).toLocaleDateString() == nowDate;
+    return new Date(event.startDateTime).toLocaleDateString() == nowDate;
   });
   const todayEventsSorted = todayEvents.sort(function (a, b) {
     return (
