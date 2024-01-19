@@ -2,7 +2,7 @@ import { keyBy } from '../helpers/keyBy';
 import { AppBooking, OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
-import { OfficeRnDMember } from './OfficeRnDTypes/Member';
+import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
@@ -47,16 +47,16 @@ export class OfficeRnDService {
     return fetchedData;
   };
 
-  getEventsWithMeetingRoomsAndHostingMember = async (
+  getEventsWithMeetingRoomsAndHostingTeam = async (
     dateStart: string,
     dateEnd: string,
   ): Promise<AppBooking[]> => {
     const meetingRoomsById = await this.getMeetingRoomsWithFloor();
     const events = await this.getEvents(dateStart, dateEnd);
-    const membersById = await this.getMembers();
+    const teamsById = await this.getTeams();
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
-      const memberName = membersById[event.member];
+      const teamName = teamsById[event.team];
       return {
         _id: event._id,
         summary: event.summary,
@@ -66,7 +66,7 @@ export class OfficeRnDService {
         timezone: event.timezone,
         room: meetingRoom?.name || 'no meeting room',
         floor: meetingRoom?.floor || 'no floor',
-        member: memberName?.name || 'no member',
+        team: teamName?.name || 'no team',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;
@@ -99,23 +99,23 @@ export class OfficeRnDService {
     return keyBy(floorsArray, '_id');
   };
 
-  private getMembers = async () => {
+  private getTeams = async () => {
     let currNextPointer = '';
-    const baseGetMembersURL = `${this.BASE_API_URL}/members?$limit=100`;
-    let membersArray = new Array<OfficeRnDMember>();
+    const baseGetTeamsURL = `${this.BASE_API_URL}/teams?$limit=100`;
+    let teamsArray = new Array<OfficeRnDTeam>();
     do {
       const currURL =
         currNextPointer == ''
-          ? baseGetMembersURL
-          : baseGetMembersURL + `&$next=` + currNextPointer;
+          ? baseGetTeamsURL
+          : baseGetTeamsURL + `&$next=` + currNextPointer;
 
-      let currFetch = await this.rawFetchWithToken<OfficeRnDMember[]>(currURL);
-      const body = (await currFetch.json()) as OfficeRnDMember[];
-      membersArray = membersArray.concat(body);
+      let currFetch = await this.rawFetchWithToken<OfficeRnDTeam[]>(currURL);
+      const body = (await currFetch.json()) as OfficeRnDTeam[];
+      teamsArray = teamsArray.concat(body);
       const fetchNextCursor = currFetch.headers.get('rnd-cursor-next');
       currNextPointer = fetchNextCursor != null ? fetchNextCursor : '';
     } while (currNextPointer != '');
-    return keyBy(membersArray, '_id');
+    return keyBy(teamsArray, '_id');
   };
 }
 
