@@ -2,6 +2,7 @@ import { keyBy } from '../helpers/keyBy';
 import { AppBooking, OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
+import { OfficeRnDMember } from './OfficeRnDTypes/Member';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
@@ -41,14 +42,16 @@ export class OfficeRnDService {
     return fetchedData;
   };
 
-  getEventsWithMeetingRooms = async (
+  getEventsWithMeetingRoomsAndHostingMember = async (
     dateStart: string,
     dateEnd: string,
   ): Promise<AppBooking[]> => {
     const meetingRoomsById = await this.getMeetingRoomsWithFloor();
     const events = await this.getEvents(dateStart, dateEnd);
+    const membersById = await this.getMembers();
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
+      const memberName = membersById[event.member];
       return {
         _id: event._id,
         summary: event.summary,
@@ -58,7 +61,7 @@ export class OfficeRnDService {
         timezone: event.timezone,
         room: meetingRoom?.name || 'no meeting room',
         floor: meetingRoom?.floor || 'no floor',
-        member: 'Not implemented',
+        member: memberName?.name || 'no member',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;
@@ -90,6 +93,13 @@ export class OfficeRnDService {
     );
     return keyBy(floorsArray, '_id');
   };
+
+  private getMembers = async () => {
+    let membersArray = await this.fetchWithToken<OfficeRnDMember[]>(
+      `${this.BASE_API_URL}/members`,
+    );
+    return keyBy(membersArray, '_id')
+  }
 }
 
 const AuthOptions = {
