@@ -20,7 +20,7 @@ export class OfficeRnDService {
     return this.access_token;
   };
 
-  private fetchWithToken = async <T extends {}>(url: string) => {
+  private rawFetchWithToken = async <T extends {}>(url: string) => {
     const token = await this.authenticate();
     let fetchedData = await fetch(url, {
       method: 'GET',
@@ -29,6 +29,11 @@ export class OfficeRnDService {
         Authorization: 'Bearer ' + token,
       },
     });
+    return fetchedData;
+  };
+
+  private fetchWithToken = async <T extends {}>(url: string) => {
+    let fetchedData = await this.rawFetchWithToken(url);
     return (await fetchedData.json()) as T;
   };
 
@@ -95,11 +100,23 @@ export class OfficeRnDService {
   };
 
   private getMembers = async () => {
-    let membersArray = await this.fetchWithToken<OfficeRnDMember[]>(
-      `${this.BASE_API_URL}/members`,
-    );
-    return keyBy(membersArray, '_id')
-  }
+    let currNextPointer = '';
+    const baseGetMembersURL = `${this.BASE_API_URL}/members?$limit=100`;
+    let membersArray = new Array<OfficeRnDMember>();
+    do {
+      const currURL =
+        currNextPointer == ''
+          ? baseGetMembersURL
+          : baseGetMembersURL + `&$next=` + currNextPointer;
+
+      let currFetch = await this.rawFetchWithToken<OfficeRnDMember[]>(currURL);
+      const body = (await currFetch.json()) as OfficeRnDMember[];
+      membersArray = membersArray.concat(body);
+      const fetchNextCursor = currFetch.headers.get('rnd-cursor-next');
+      currNextPointer = fetchNextCursor != null ? fetchNextCursor : '';
+    } while (currNextPointer != '');
+    return keyBy(membersArray, '_id');
+  };
 }
 
 const AuthOptions = {
