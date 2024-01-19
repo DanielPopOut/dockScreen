@@ -58,6 +58,7 @@ export class OfficeRnDService {
         timezone: event.timezone,
         room: meetingRoom?.name || 'no meeting room',
         floor: meetingRoom?.floor || 'no floor',
+        member: 'Not implemented',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;
