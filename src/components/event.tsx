@@ -1,4 +1,4 @@
-import { AppBooking } from './src/services/OfficeRnDTypes/Booking';
+import { AppBooking } from '../services/OfficeRnDTypes/Booking';
 
 export default function Event({ event }: { event: AppBooking }) {
   const style = getEventStyle(event);
