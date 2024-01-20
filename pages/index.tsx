@@ -1,4 +1,4 @@
-import Event from '@/event';
+import Event from '@/src/components/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';

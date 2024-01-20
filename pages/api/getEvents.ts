@@ -16,7 +16,7 @@ export default async function handler(
   const tomorrowDate = date.toLocaleDateString();
   console.log(nowDate, tomorrowDate);
   const officeRNDService = new OfficeRnDService();
-  const events = await officeRNDService.getEventsWithMeetingRooms(
+  const events = await officeRNDService.getEventsWithMeetingRoomsAndHostingTeam(
     nowDate,
     tomorrowDate,
   );

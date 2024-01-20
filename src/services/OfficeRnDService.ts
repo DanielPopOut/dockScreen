@@ -2,6 +2,7 @@ import { keyBy } from '../helpers/keyBy';
 import { AppBooking, OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
+import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
@@ -19,7 +20,7 @@ export class OfficeRnDService {
     return this.access_token;
   };
 
-  private fetchWithToken = async <T extends {}>(url: string) => {
+  private rawFetchWithToken = async <T extends {}>(url: string) => {
     const token = await this.authenticate();
     let fetchedData = await fetch(url, {
       method: 'GET',
@@ -28,6 +29,11 @@ export class OfficeRnDService {
         Authorization: 'Bearer ' + token,
       },
     });
+    return fetchedData;
+  };
+
+  private fetchWithToken = async <T extends {}>(url: string) => {
+    let fetchedData = await this.rawFetchWithToken(url);
     return (await fetchedData.json()) as T;
   };
 
@@ -41,14 +47,16 @@ export class OfficeRnDService {
     return fetchedData;
   };
 
-  getEventsWithMeetingRooms = async (
+  getEventsWithMeetingRoomsAndHostingTeam = async (
     dateStart: string,
     dateEnd: string,
   ): Promise<AppBooking[]> => {
     const meetingRoomsById = await this.getMeetingRoomsWithFloor();
     const events = await this.getEvents(dateStart, dateEnd);
+    const teamsById = await this.getTeams();
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
+      const teamName = teamsById[event.team];
       return {
         _id: event._id,
         summary: event.summary,
@@ -58,6 +66,7 @@ export class OfficeRnDService {
         timezone: event.timezone,
         room: meetingRoom?.name || 'no meeting room',
         floor: meetingRoom?.floor || 'no floor',
+        team: teamName?.name || 'no team',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;
@@ -88,6 +97,25 @@ export class OfficeRnDService {
       `${this.BASE_API_URL}/floors`,
     );
     return keyBy(floorsArray, '_id');
+  };
+
+  private getTeams = async () => {
+    let currNextPointer = '';
+    const baseGetTeamsURL = `${this.BASE_API_URL}/teams?$limit=100`;
+    let teamsArray = new Array<OfficeRnDTeam>();
+    do {
+      const currURL =
+        currNextPointer == ''
+          ? baseGetTeamsURL
+          : baseGetTeamsURL + `&$next=` + currNextPointer;
+
+      let currFetch = await this.rawFetchWithToken<OfficeRnDTeam[]>(currURL);
+      const body = (await currFetch.json()) as OfficeRnDTeam[];
+      teamsArray = teamsArray.concat(body);
+      const fetchNextCursor = currFetch.headers.get('rnd-cursor-next');
+      currNextPointer = fetchNextCursor != null ? fetchNextCursor : '';
+    } while (currNextPointer != '');
+    return keyBy(teamsArray, '_id');
   };
 }
 

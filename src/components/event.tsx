@@ -1,4 +1,4 @@
-import { AppBooking } from './src/services/OfficeRnDTypes/Booking';
+import { AppBooking } from '../services/OfficeRnDTypes/Booking';
 
 export default function Event({ event }: { event: AppBooking }) {
   const style = getEventStyle(event);
@@ -7,7 +7,7 @@ export default function Event({ event }: { event: AppBooking }) {
       <div className='eventDetails'>
         <div className='eventLeft'>
           <div className='eventTitle'>
-            {event.floor} - {event.room}
+            {event.team} - {event.floor} - {event.room}
           </div>
           <div className='eventDescription'>{event.summary}</div>
         </div>
