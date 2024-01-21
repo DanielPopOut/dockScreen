@@ -17,27 +17,21 @@ export default async function handler(
   const tomorrowDate = date.toLocaleDateString();
   console.log(nowDate, tomorrowDate);
   const officeRNDService = new OfficeRnDService();
-  const eventBriteService = new EventBriteService();
-  
-  const events = await officeRNDService.getEvent(nowDate, tomorrowDate);
-  const eventBriteEvents = await eventBriteService.getEventBriteEventsByOrg();
-  console.log(eventBriteEvents);
-
+  const events = await officeRNDService.getEventsWithMeetingRoomsAndHostingTeam(
+    nowDate,
+    tomorrowDate,
+  );
   const todayEvents = events.filter((event: any) => {
-    return new Date(event['start']['dateTime']).toLocaleDateString() == nowDate;
+    return new Date(event.startDateTime).toLocaleDateString() == nowDate;
   });
-  const todayEventsSorted = todayEvents.sort(function (a: any, b: any) {
+  const todayEventsSorted = todayEvents.sort(function (a, b) {
     return (
-      new Date(a['start']['dateTime']).getTime() -
-      new Date(b['start']['dateTime']).getTime()
+      new Date(a.startDateTime).getTime() - new Date(b.endDateTime).getTime()
     );
   });
-  res
-    .status(200)
-    .json(
-      SeparateStartedAndUpcomingEvents(
-        TrimExpiredEvents(todayEventsSorted, new Date()),
-        new Date(),
-      ),
-    );
+  const eventsToShow = SeparateStartedAndUpcomingEvents(
+    TrimExpiredEvents(todayEventsSorted, new Date()),
+    new Date(),
+  );
+  res.status(200).json(eventsToShow);
 }
