@@ -54,14 +54,14 @@ export class OfficeRnDService {
     const meetingRoomsById = await this.getMeetingRoomsWithFloor();
     const events = await this.getEvents(dateStart, dateEnd);
     const teamsById = await this.getTeams();
-    return this.parameterizedGetEventsWithMeetingRoomsAndHostingTeam(
+    return this.combineOfficeRnDData(
       meetingRoomsById,
       events,
       teamsById
     );
   };
 
-  parameterizedGetEventsWithMeetingRoomsAndHostingTeam = (
+  combineOfficeRnDData = (
     meetingRoomsById: Record<string, {
       floor: string;
       _id: string;
@@ -90,13 +90,13 @@ export class OfficeRnDService {
   };
 
   private getMeetingRoomsWithFloor = async () => {
-    return this.parameterizedGetMeetingRoomsWithFloor(
+    return this.combineMeetingRoomsAndFloors(
       await this.getFloorsById(),
       await this.getMeetingRooms()
     )
   };
 
-  parameterizedGetMeetingRoomsWithFloor = (
+  combineMeetingRoomsAndFloors = (
     floorsById : Record<string, OfficeRnDFloor>,
     meetingRooms: OfficeRndMeetingRoom[]
   ) => {
