@@ -61,7 +61,7 @@ export class OfficeRnDService {
     );
   };
 
-  parameterizedGetEventsWithMeetingRoomsAndHostingTeam = async (
+  parameterizedGetEventsWithMeetingRoomsAndHostingTeam = (
     meetingRoomsById: Record<string, {
       floor: string;
       type: "meeting_room";
@@ -71,7 +71,7 @@ export class OfficeRnDService {
     }>,
     events: OfficeRndBooking[],
     teamsById: Record<string, OfficeRnDTeam>,
-  ): Promise<AppBooking[]> => {
+  ): AppBooking[] => {
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
       const teamName = teamsById[event.team];
@@ -97,7 +97,7 @@ export class OfficeRnDService {
     )
   };
 
-  private parameterizedGetMeetingRoomsWithFloor = async (
+  private parameterizedGetMeetingRoomsWithFloor = (
     floorsById : Record<string, OfficeRnDFloor>,
     meetingRooms: OfficeRndMeetingRoom[]
   ) => {
