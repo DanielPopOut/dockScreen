@@ -73,8 +73,16 @@ export class OfficeRnDService {
   };
 
   private getMeetingRoomsWithFloor = async () => {
-    const floorsById = await this.getFloorsById();
-    const meetingRooms = await this.getMeetingRooms();
+    return this.parameterizedGetMeetingRoomsWithFloor(
+      await this.getFloorsById(),
+      await this.getMeetingRooms()
+    )
+  };
+
+  private parameterizedGetMeetingRoomsWithFloor = async (
+    floorsById : Record<string, OfficeRnDFloor>,
+    meetingRooms: OfficeRndMeetingRoom[]
+  ) => {
     const meetingRoomsWithFloor = meetingRooms.map((meetingRoom) => {
       const floor = floorsById[meetingRoom.room];
       return {
