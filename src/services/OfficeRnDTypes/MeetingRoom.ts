@@ -1,5 +1,4 @@
 export type OfficeRndMeetingRoom = {
-  type: 'meeting_room';
   _id: string;
   name: string;
   room: string; // this is the floor id... I do not know why

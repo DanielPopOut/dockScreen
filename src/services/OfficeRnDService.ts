@@ -64,7 +64,6 @@ export class OfficeRnDService {
   parameterizedGetEventsWithMeetingRoomsAndHostingTeam = (
     meetingRoomsById: Record<string, {
       floor: string;
-      type: "meeting_room";
       _id: string;
       name: string;
       room: string;
@@ -97,7 +96,7 @@ export class OfficeRnDService {
     )
   };
 
-  private parameterizedGetMeetingRoomsWithFloor = (
+  parameterizedGetMeetingRoomsWithFloor = (
     floorsById : Record<string, OfficeRnDFloor>,
     meetingRooms: OfficeRndMeetingRoom[]
   ) => {
