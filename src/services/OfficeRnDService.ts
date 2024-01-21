@@ -77,7 +77,6 @@ export class OfficeRnDService {
       return {
         _id: event._id,
         summary: event.summary,
-        title: event.summary,
         endDateTime: event.end?.dateTime,
         startDateTime: event.start?.dateTime,
         timezone: event.timezone,
