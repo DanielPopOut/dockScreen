@@ -1,10 +1,39 @@
-import Event from '@/src/components/event';
+import Event, { EventBriteEvent } from '@/src/components/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
+
+function GetEventBriteEventsFromResult(eventBriteData: any) {
+  let processedEventBriteData: {
+    location: string;
+    name: string;
+    timeStart: string;
+    timeEnd: string;
+    description: string;
+    picUrl: string;
+  }[] = [];
+  try {
+    // api Returns Slower than expect when async things.
+    if (eventBriteData !== null) {
+      eventBriteData.forEach((element: any) => {
+        processedEventBriteData.push({
+          location: element['venue_id'],
+          name: element['name']['text'],
+          timeStart: new Date(element['start']['utc']).toLocaleTimeString(),
+          timeEnd: new Date(element['end']['utc']).toLocaleTimeString(),
+          description: element['description']['text'],
+          picUrl: element['logo']['url'],
+        });
+      });
+    }
+  } catch (error) {
+    return ['Error'];
+  }
+  return processedEventBriteData;
+}
 
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
@@ -18,14 +47,28 @@ export default function Home() {
     started: Array<AppBooking>(),
     upcoming: Array<AppBooking>(),
   });
+  const [eventBriteData, setEventBriteData] = React.useState({
+    started: Array<any>(),
+    upcoming: Array<any>(),
+  });
+
   useInterval(() => {
     fetch('/api/getEvents')
       .then((res) => res.json())
       .then((apiEventData) => setEventData(apiEventData));
+    fetch('/api/getEventBriteEvent')
+      .then((res) => res.json())
+      .then((apiEventBriteEvent) => setEventBriteData(apiEventBriteEvent));
   }, TIME_TO_GET_REQUEST);
 
   const eventsHappeningNow = eventData.started;
   const eventsComingSoon = eventData.upcoming;
+  const eventBriteEventsNow = GetEventBriteEventsFromResult(
+    eventBriteData['started'],
+  );
+  const eventBriteEventsComingSoon = GetEventBriteEventsFromResult(
+    eventBriteData['upcoming'],
+  );
 
   return (
     <div className='event_page'>
@@ -57,6 +100,23 @@ export default function Home() {
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
               return <Event event={event} key={event._id} />;
+            })}
+          </div>
+        </Section>
+      </div>
+      {/* <div className={`${styles.left_section} ${styles.right}`}> */}
+      <div className='right_section'>
+        <Section title='EventBrite Right Now'>
+          <div className='event_section__list'>
+            {eventBriteEventsNow.map((event) => {
+              return <EventBriteEvent eventBriteEvent={event} />;
+            })}
+          </div>
+        </Section>
+        <Section title='EventBrite'>
+          <div className='event_section__list'>
+            {eventBriteEventsComingSoon.map((event) => {
+              return <EventBriteEvent eventBriteEvent={event} />;
             })}
           </div>
         </Section>
