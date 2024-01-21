@@ -22,3 +22,20 @@ export function SeparateStartedAndUpcomingEvents(events: Array<OfficeRnDEvent>, 
     }
     return out
 }
+
+// We check for currentEvent in the SeparateStartedAndUpcomingEventsFromEventBrite so don't need to iterate array twice
+// Function is Shamelessly stolen from Aiden
+export function SeparateStartedAndUpcomingEventsFromEventBrite(events: Array<OfficeRnDEvent>, dateTimeToCompare: Date) {
+    let out = {started: Array<OfficeRnDEvent>(), upcoming: Array<OfficeRnDEvent>()};
+    let previousDate = new Date();
+    previousDate.setDate(dateTimeToCompare.getDate() - 1);
+    for(let i=0; i < Object.keys(events).length; i++) {
+        const item: any = events[i];
+        if (new Date(item["start"]["utc"]) == previousDate) {
+            out["started"].push(item)
+        } else if (new Date(item["start"]["utc"]) >= dateTimeToCompare) {
+            out["upcoming"].push(item)
+        }
+    }
+    return out
+}

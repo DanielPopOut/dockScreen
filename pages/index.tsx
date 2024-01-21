@@ -1,4 +1,4 @@
-import Event from '@/event';
+import { Event, EventBriteEvent } from '@/event';
 import React, { PropsWithChildren } from 'react';
 import type { MeetingRoomInfo } from './dataProcessing/meetingRoomProcessing';
 import { ResolveMeetingRoomName } from './dataProcessing/meetingRoomProcessing';
@@ -12,7 +12,6 @@ function GetEventsFromResult(
   eventData: any,
   meetingRoomData: Array<MeetingRoomInfo>,
 ) {
-  console.log(eventData);
   let events = [];
   for (let i = 0; i < Object.keys(eventData).length; i++) {
     const booking = eventData[i];
@@ -25,6 +24,36 @@ function GetEventsFromResult(
     });
   }
   return events;
+}
+function GetEventBriteEventsFromResult(
+  eventBriteData: any,
+) {
+  let processedEventBriteData: {
+    location: string;
+    name: string;
+    timeStart: string;
+    timeEnd: string;
+    description: string;
+    picUrl: string;
+  }[] = [];
+  try {
+    // api Returns Slower than expect when async things.
+    if (eventBriteData !== null) {
+      eventBriteData.forEach((element: any) => {
+        processedEventBriteData.push({
+          location: element['venue_id'],
+          name: element['name']['text'],
+          timeStart: new Date(element['start']['utc']).toLocaleTimeString(),
+          timeEnd: new Date(element['end']['utc']).toLocaleTimeString(),
+          description: element['description']['text'],
+          picUrl: element['logo']['url'],
+        });
+      });
+    }
+  } catch (error) {
+    return ['Error'];
+  }
+  return processedEventBriteData;
 }
 
 export default function Home() {
@@ -42,10 +71,19 @@ export default function Home() {
   const [meetingRoomData, setMeetingRoomData] = React.useState(
     Array<MeetingRoomInfo>(),
   );
+
+  const [eventBriteData, setEventBriteData] = React.useState({
+    started: Array<OfficeRnDEvent>(),
+    upcoming: Array<OfficeRnDEvent>(),
+  });
+
   useInterval(() => {
     fetch('/api/getEvents')
       .then((res) => res.json())
       .then((apiEventData) => setEventData(apiEventData));
+    fetch('/api/getEventBriteEvent')
+      .then((res) => res.json())
+      .then((apiEventBriteEvent) => setEventBriteData(apiEventBriteEvent));
 
     fetch('/api/getMeetingRooms')
       .then((res) => res.json())
@@ -60,6 +98,8 @@ export default function Home() {
     eventData['upcoming'],
     meetingRoomData,
   );
+  const eventBriteEventsNow = GetEventBriteEventsFromResult(eventBriteData['started']);
+  const eventBriteEventsComingSoon = GetEventBriteEventsFromResult(eventBriteData['upcoming']);
 
   return (
     <div className='event_page'>
@@ -91,6 +131,23 @@ export default function Home() {
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
               return <Event event={event} />;
+            })}
+          </div>
+        </Section>
+      </div>
+      {/* <div className={`${styles.left_section} ${styles.right}`}> */}
+      <div className='right_section'>
+        <Section title='EventBrite Right Now'>
+          <div className='event_section__list'>
+            {eventBriteEventsNow.map((event) => {
+              return <EventBriteEvent eventBriteEvent={event} />;
+            })}
+          </div>
+        </Section>
+        <Section title='EventBrite'>
+          <div className='event_section__list'>
+            {eventBriteEventsComingSoon.map((event) => {
+              return <EventBriteEvent eventBriteEvent={event} />;
             })}
           </div>
         </Section>
