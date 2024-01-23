@@ -66,24 +66,10 @@ export class OfficeRnDService {
   };
 
   private getMeetingRoomsWithFloor = async () => {
-    return this.combineMeetingRoomsAndFloors(
+    return this.aggregator.combineMeetingRoomsAndFloors(
       await this.getFloorsById(),
       await this.getMeetingRooms()
     )
-  };
-
-  combineMeetingRoomsAndFloors = (
-    floorsById : Record<string, OfficeRnDFloor>,
-    meetingRooms: OfficeRndMeetingRoom[]
-  ) => {
-    const meetingRoomsWithFloor = meetingRooms.map((meetingRoom) => {
-      const floor = floorsById[meetingRoom.room];
-      return {
-        ...meetingRoom,
-        floor: floor?.name || 'no floor',
-      };
-    });
-    return keyBy(meetingRoomsWithFloor, '_id');
   };
 
   private getMeetingRooms = async () => {

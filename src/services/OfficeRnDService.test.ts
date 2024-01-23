@@ -5,7 +5,7 @@ import {
 test('combineMeetingRoomsAndFloors combines two single entry items that match', () => {
   const service = new OfficeRnDService();
   expect(
-    service.combineMeetingRoomsAndFloors(
+    service.aggregator.combineMeetingRoomsAndFloors(
       {"10": {_id: "10", name: "Test Floor"}},
       [{_id: "0", name: "Test Room", room: "10"}]
     )

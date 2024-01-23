@@ -1,5 +1,8 @@
 import { OfficeRndBooking, AppBooking } from "./OfficeRnDTypes/Booking";
 import { OfficeRnDTeam } from "./OfficeRnDTypes/Team";
+import { OfficeRndMeetingRoom } from "./OfficeRnDTypes/MeetingRoom";
+import { OfficeRnDFloor } from "./OfficeRnDTypes/Floor";
+import { keyBy } from "../helpers/keyBy";
 
 export class OfficeRnDDataAggregator {
   combineOfficeRnDData = (
@@ -29,4 +32,17 @@ export class OfficeRnDDataAggregator {
     return eventsWithMeetingRooms;
   };
 
+  combineMeetingRoomsAndFloors = (
+    floorsById : Record<string, OfficeRnDFloor>,
+    meetingRooms: OfficeRndMeetingRoom[]
+  ) => {
+    const meetingRoomsWithFloor = meetingRooms.map((meetingRoom) => {
+      const floor = floorsById[meetingRoom.room];
+      return {
+        ...meetingRoom,
+        floor: floor?.name || 'no floor',
+      };
+    });
+    return keyBy(meetingRoomsWithFloor, '_id');
+  };
 }
