@@ -55,7 +55,10 @@ export class OfficeRnDService {
     dateStart: string,
     dateEnd: string,
   ): Promise<AppBooking[]> => {
-    const meetingRoomsById = await this.getMeetingRoomsWithFloor();
+    const meetingRoomsById = this.aggregator.combineMeetingRoomsAndFloors(
+      await this.getFloorsById(),
+      await this.getMeetingRooms()
+    );
     const events = await this.getEvents(dateStart, dateEnd);
     const teamsById = await this.getTeams();
     return this.aggregator.combineOfficeRnDData(
@@ -63,13 +66,6 @@ export class OfficeRnDService {
       events,
       teamsById
     );
-  };
-
-  private getMeetingRoomsWithFloor = async () => {
-    return this.aggregator.combineMeetingRoomsAndFloors(
-      await this.getFloorsById(),
-      await this.getMeetingRooms()
-    )
   };
 
   private getMeetingRooms = async () => {
