@@ -20,8 +20,54 @@ export class EventBriteService {
   ) => {
     // Query time_filter can help filter out expired event. page_size is 1000 in case of pagination problems. order_by asc in query so we don't need to sort it.
     let urlWithQuery;
-    urlWithQuery = `${this.AUTH_URL}organizations/${this.organizationId}/events?time_filter=current_future&order_by=start_asc&page_size=1000&organizer_filter=${this.organizer_id}`;
+    urlWithQuery = `${this.AUTH_URL}organizations/${this.organizationId}/events?time_filter=${time_filter}&order_by=start_asc&page_size=1000&organizer_filter=${this.organizer_id}`;
     let allEvents = await this.fetchWithToken(urlWithQuery);
-    return allEvents;
+    return convertEventBriteDataArray(allEvents.events);
   };
 }
+
+export type ProcessedEventBriteData = {
+  location: string;
+  name: string;
+  timeStart: string;
+  timeEnd: string;
+  description: string;
+  picUrl: string;
+};
+
+type BaseEventBriteData = {
+  name: {
+    text: string;
+  };
+  description: {
+    text: string;
+  };
+  start: {
+    utc: string;
+  };
+  end: {
+    utc: string;
+  };
+  logo: {
+    url: string;
+  };
+  venue_id: string;
+};
+
+const convertEventBriteData = (eventBriteData: BaseEventBriteData) => {
+  let processedEventBriteData: ProcessedEventBriteData = {
+    location: eventBriteData['venue_id'],
+    name: eventBriteData['name']['text'],
+    timeStart: new Date(eventBriteData['start']['utc']).toLocaleTimeString(),
+    timeEnd: new Date(eventBriteData['end']['utc']).toLocaleTimeString(),
+    description: eventBriteData['description']['text'],
+    picUrl: eventBriteData['logo']['url'],
+  };
+  return processedEventBriteData;
+};
+
+const convertEventBriteDataArray = (
+  eventBriteData: BaseEventBriteData[],
+): ProcessedEventBriteData[] => {
+  return eventBriteData.map(convertEventBriteData);
+};
