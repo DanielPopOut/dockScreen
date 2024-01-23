@@ -5,7 +5,6 @@ import {
   SeparateStartedAndUpcomingEvents,
   TrimExpiredEvents,
 } from '../dataProcessing/processEvents';
-import { EventBriteService } from '@/src/services/EventBriteService';
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,10 +20,6 @@ export default async function handler(
     nowDate,
     tomorrowDate,
   );
-  const eventBriteService = new EventBriteService();
-  
-  const eventBriteEvents = await eventBriteService.getEventBriteEventsByOrg();
-  console.log(eventBriteEvents);
 
   const todayEvents = events.filter((event: any) => {
     return new Date(event.startDateTime).toLocaleDateString() == nowDate;
