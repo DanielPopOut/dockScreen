@@ -3,10 +3,14 @@ import { AppBooking, OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
 import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
+import { OfficeRnDDataAggregator } from './OfficeRnDDataAggregator';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
   access_token = '';
+
+  aggregator = new OfficeRnDDataAggregator();
+
   private authenticate = async () => {
     if (this.access_token) {
       return this.access_token;
