@@ -1,11 +1,9 @@
-import {
-  OfficeRnDService
-} from "./OfficeRnDService"
+import { OfficeRnDDataAggregator } from "./OfficeRnDDataAggregator";
 
 test('combineMeetingRoomsAndFloors combines two single entry items that match', () => {
-  const service = new OfficeRnDService();
+  const aggregator = new OfficeRnDDataAggregator();
   expect(
-    service.aggregator.combineMeetingRoomsAndFloors(
+    aggregator.combineMeetingRoomsAndFloors(
       {"10": {_id: "10", name: "Test Floor"}},
       [{_id: "0", name: "Test Room", room: "10"}]
     )
@@ -15,9 +13,9 @@ test('combineMeetingRoomsAndFloors combines two single entry items that match', 
 })
 
 test('combineOfficeRnDData combines a set of single entry data items correctly', () => {
-  const service = new OfficeRnDService();
+  const aggregator = new OfficeRnDDataAggregator();
   expect(
-    service.aggregator.combineOfficeRnDData(
+    aggregator.combineOfficeRnDData(
       {"0": {_id: "0", name: "Test Room", room: "10", floor: "Test Floor"}},
       [{
         _id: "1", 
