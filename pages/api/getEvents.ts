@@ -20,6 +20,7 @@ export default async function handler(
     nowDate,
     tomorrowDate,
   );
+
   const todayEvents = events.filter((event: any) => {
     return new Date(event.startDateTime).toLocaleDateString() == nowDate;
   });
