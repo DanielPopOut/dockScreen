@@ -17,7 +17,7 @@ test('combineMeetingRoomsAndFloors combines two single entry items that match', 
 test('combineOfficeRnDData combines a set of single entry data items correctly', () => {
   const service = new OfficeRnDService();
   expect(
-    service.combineOfficeRnDData(
+    service.aggregator.combineOfficeRnDData(
       {"0": {_id: "0", name: "Test Room", room: "10", floor: "Test Floor"}},
       [{
         _id: "1", 

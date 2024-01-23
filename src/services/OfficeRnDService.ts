@@ -58,38 +58,11 @@ export class OfficeRnDService {
     const meetingRoomsById = await this.getMeetingRoomsWithFloor();
     const events = await this.getEvents(dateStart, dateEnd);
     const teamsById = await this.getTeams();
-    return this.combineOfficeRnDData(
+    return this.aggregator.combineOfficeRnDData(
       meetingRoomsById,
       events,
       teamsById
     );
-  };
-
-  combineOfficeRnDData = (
-    meetingRoomsById: Record<string, {
-      floor: string;
-      _id: string;
-      name: string;
-      room: string;
-    }>,
-    events: OfficeRndBooking[],
-    teamsById: Record<string, OfficeRnDTeam>,
-  ): AppBooking[] => {
-    const eventsWithMeetingRooms = events.map((event) => {
-      const meetingRoom = meetingRoomsById[event.resourceId];
-      const teamName = teamsById[event.team];
-      return {
-        _id: event._id,
-        summary: event.summary,
-        endDateTime: event.end?.dateTime,
-        startDateTime: event.start?.dateTime,
-        timezone: event.timezone,
-        room: meetingRoom?.name || 'no meeting room',
-        floor: meetingRoom?.floor || 'no floor',
-        team: teamName?.name || 'no team',
-      } as AppBooking;
-    });
-    return eventsWithMeetingRooms;
   };
 
   private getMeetingRoomsWithFloor = async () => {
