@@ -3,10 +3,14 @@ import { AppBooking, OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
 import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
+import { OfficeRnDDataAggregator } from './OfficeRnDDataAggregator';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
   access_token = '';
+
+  aggregator = new OfficeRnDDataAggregator();
+
   private authenticate = async () => {
     if (this.access_token) {
       return this.access_token;
@@ -51,38 +55,16 @@ export class OfficeRnDService {
     dateStart: string,
     dateEnd: string,
   ): Promise<AppBooking[]> => {
-    const meetingRoomsById = await this.getMeetingRoomsWithFloor();
-    const events = await this.getEvents(dateStart, dateEnd);
-    const teamsById = await this.getTeams();
-    const eventsWithMeetingRooms = events.map((event) => {
-      const meetingRoom = meetingRoomsById[event.resourceId];
-      const teamName = teamsById[event.team];
-      return {
-        _id: event._id,
-        summary: event.summary,
-        title: event.summary,
-        endDateTime: event.end?.dateTime,
-        startDateTime: event.start?.dateTime,
-        timezone: event.timezone,
-        room: meetingRoom?.name || 'no meeting room',
-        floor: meetingRoom?.floor || 'no floor',
-        team: teamName?.name || 'no team',
-      } as AppBooking;
-    });
-    return eventsWithMeetingRooms;
-  };
-
-  private getMeetingRoomsWithFloor = async () => {
-    const floorsById = await this.getFloorsById();
+    const floors = await this.getFloors();
     const meetingRooms = await this.getMeetingRooms();
-    const meetingRoomsWithFloor = meetingRooms.map((meetingRoom) => {
-      const floor = floorsById[meetingRoom.room];
-      return {
-        ...meetingRoom,
-        floor: floor?.name || 'no floor',
-      };
-    });
-    return keyBy(meetingRoomsWithFloor, '_id');
+    const events = await this.getEvents(dateStart, dateEnd);
+    const teams = await this.getTeams();
+    return this.aggregator.combineOfficeRnDDataIntoAppBookings(
+      floors,
+      meetingRooms,
+      events,
+      teams
+    );
   };
 
   private getMeetingRooms = async () => {
@@ -92,11 +74,11 @@ export class OfficeRnDService {
     return meetingRooms;
   };
 
-  private getFloorsById = async () => {
+  private getFloors = async () => {
     let floorsArray = await this.fetchWithToken<OfficeRnDFloor[]>(
       `${this.BASE_API_URL}/floors`,
     );
-    return keyBy(floorsArray, '_id');
+    return floorsArray
   };
 
   private getTeams = async () => {
@@ -115,7 +97,7 @@ export class OfficeRnDService {
       const fetchNextCursor = currFetch.headers.get('rnd-cursor-next');
       currNextPointer = fetchNextCursor != null ? fetchNextCursor : '';
     } while (currNextPointer != '');
-    return keyBy(teamsArray, '_id');
+    return teamsArray;
   };
 }
 

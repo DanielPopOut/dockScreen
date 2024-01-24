@@ -14,7 +14,6 @@ export type OfficeRndBooking = {
 
 export type AppBooking = {
   _id: string;
-  title: string;
   startDateTime: string;
   endDateTime: string;
   timezone: string;
