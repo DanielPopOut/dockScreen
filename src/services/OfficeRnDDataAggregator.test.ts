@@ -16,7 +16,7 @@ test('combineOfficeRnDData combines a set of single entry data items correctly',
   const aggregator = new OfficeRnDDataAggregator();
   expect(
     aggregator.combineOfficeRnDData(
-      {"3": {_id: "3", name: "Test Floor"}},
+      [{_id: "3", name: "Test Floor"}],
       [{_id: "0", name: "Test Room", room: "3"}],
       [{
         _id: "1", 
@@ -27,7 +27,7 @@ test('combineOfficeRnDData combines a set of single entry data items correctly',
         resourceId: "0", 
         team: "2"
       }],
-      {"2": {_id: "2", name: "Test Team"}}
+      [{_id: "2", name: "Test Team"}]
     )
   ).toStrictEqual(
     [{

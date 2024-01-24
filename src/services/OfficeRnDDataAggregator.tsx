@@ -6,11 +6,13 @@ import { keyBy } from "../helpers/keyBy";
 
 export class OfficeRnDDataAggregator {
   combineOfficeRnDData = (
-    floorsById: Record<string, OfficeRnDFloor>,
+    floors: OfficeRnDFloor[],
     meetingRooms: OfficeRndMeetingRoom[],
     events: OfficeRndBooking[],
-    teamsById: Record<string, OfficeRnDTeam>,
+    teams: OfficeRnDTeam[],
   ): AppBooking[] => {
+    const floorsById = keyBy(floors, '_id');
+    const teamsById = keyBy(teams, '_id');
     const meetingRoomsById = this.combineMeetingRoomsAndFloors(
       floorsById, meetingRooms
     );
