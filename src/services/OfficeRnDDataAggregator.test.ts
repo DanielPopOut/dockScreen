@@ -16,7 +16,8 @@ test('combineOfficeRnDData combines a set of single entry data items correctly',
   const aggregator = new OfficeRnDDataAggregator();
   expect(
     aggregator.combineOfficeRnDData(
-      {"0": {_id: "0", name: "Test Room", room: "10", floor: "Test Floor"}},
+      {"3": {_id: "3", name: "Test Floor"}},
+      [{_id: "0", name: "Test Room", room: "3"}],
       [{
         _id: "1", 
         summary: "", 

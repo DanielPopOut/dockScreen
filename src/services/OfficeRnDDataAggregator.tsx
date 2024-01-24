@@ -6,15 +6,14 @@ import { keyBy } from "../helpers/keyBy";
 
 export class OfficeRnDDataAggregator {
   combineOfficeRnDData = (
-    meetingRoomsById: Record<string, {
-      floor: string;
-      _id: string;
-      name: string;
-      room: string;
-    }>,
+    floorsById: Record<string, OfficeRnDFloor>,
+    meetingRooms: OfficeRndMeetingRoom[],
     events: OfficeRndBooking[],
     teamsById: Record<string, OfficeRnDTeam>,
   ): AppBooking[] => {
+    const meetingRoomsById = this.combineMeetingRoomsAndFloors(
+      floorsById, meetingRooms
+    );
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
       const teamName = teamsById[event.team];
