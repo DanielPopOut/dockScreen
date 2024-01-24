@@ -5,7 +5,7 @@ import { OfficeRnDFloor } from "./OfficeRnDTypes/Floor";
 import { keyBy } from "../helpers/keyBy";
 
 export class OfficeRnDDataAggregator {
-  combineOfficeRnDData = (
+  combineOfficeRnDDataIntoAppBookings = (
     floors: OfficeRnDFloor[],
     meetingRooms: OfficeRndMeetingRoom[],
     events: OfficeRndBooking[],

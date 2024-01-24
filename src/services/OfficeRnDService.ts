@@ -59,7 +59,7 @@ export class OfficeRnDService {
     const meetingRooms = await this.getMeetingRooms();
     const events = await this.getEvents(dateStart, dateEnd);
     const teams = await this.getTeams();
-    return this.aggregator.combineOfficeRnDData(
+    return this.aggregator.combineOfficeRnDDataIntoAppBookings(
       floors,
       meetingRooms,
       events,
