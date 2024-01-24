@@ -55,10 +55,10 @@ export class OfficeRnDService {
     dateStart: string,
     dateEnd: string,
   ): Promise<AppBooking[]> => {
-    const floorsById = await this.getFloorsById();
+    const floorsById = keyBy(await this.getFloors(), '_id');
     const meetingRooms = await this.getMeetingRooms();
     const events = await this.getEvents(dateStart, dateEnd);
-    const teamsById = await this.getTeams();
+    const teamsById = keyBy(await this.getTeams(), '_id');
     return this.aggregator.combineOfficeRnDData(
       floorsById,
       meetingRooms,
@@ -74,11 +74,11 @@ export class OfficeRnDService {
     return meetingRooms;
   };
 
-  private getFloorsById = async () => {
+  private getFloors = async () => {
     let floorsArray = await this.fetchWithToken<OfficeRnDFloor[]>(
       `${this.BASE_API_URL}/floors`,
     );
-    return keyBy(floorsArray, '_id');
+    return floorsArray
   };
 
   private getTeams = async () => {
@@ -97,7 +97,7 @@ export class OfficeRnDService {
       const fetchNextCursor = currFetch.headers.get('rnd-cursor-next');
       currNextPointer = fetchNextCursor != null ? fetchNextCursor : '';
     } while (currNextPointer != '');
-    return keyBy(teamsArray, '_id');
+    return teamsArray;
   };
 }
 
