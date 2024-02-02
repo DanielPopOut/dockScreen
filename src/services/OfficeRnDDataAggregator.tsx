@@ -3,6 +3,7 @@ import { OfficeRnDTeam } from "./OfficeRnDTypes/Team";
 import { OfficeRndMeetingRoom } from "./OfficeRnDTypes/MeetingRoom";
 import { OfficeRnDFloor } from "./OfficeRnDTypes/Floor";
 import { keyBy } from "../helpers/keyBy";
+import { OfficeRnDMember } from "./OfficeRnDTypes/Member";
 
 export class OfficeRnDDataAggregator {
   combineOfficeRnDDataIntoAppBookings = (
@@ -10,15 +11,18 @@ export class OfficeRnDDataAggregator {
     meetingRooms: OfficeRndMeetingRoom[],
     events: OfficeRndBooking[],
     teams: OfficeRnDTeam[],
+    members: OfficeRnDMember[],
   ): AppBooking[] => {
     const floorsById = keyBy(floors, '_id');
     const teamsById = keyBy(teams, '_id');
     const meetingRoomsById = this.combineMeetingRoomsAndFloors(
       floorsById, meetingRooms
     );
+    const membersById = keyBy(members, '_id');
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
       const teamName = teamsById[event.team];
+      const memberName = membersById[event.member];
       return {
         _id: event._id,
         summary: event.summary,
@@ -27,7 +31,7 @@ export class OfficeRnDDataAggregator {
         timezone: event.timezone,
         room: meetingRoom?.name || 'no meeting room',
         floor: meetingRoom?.floor || 'no floor',
-        team: teamName?.name || 'no team',
+        team: teamName?.name || memberName?.name || 'no host',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;
