@@ -63,7 +63,7 @@ export default function Home() {
             })}
           </div>
         </Section>
-        <Section title='Coming soon'>
+        <Section title='Later today'>
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
               return <Event event={event} key={event._id} />;
