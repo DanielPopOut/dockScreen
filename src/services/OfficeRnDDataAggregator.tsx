@@ -31,7 +31,7 @@ export class OfficeRnDDataAggregator {
         timezone: event.timezone,
         room: meetingRoom?.name || 'no meeting room',
         floor: meetingRoom?.floor || 'no floor',
-        team: teamName?.name || memberName?.name || 'no host',
+        host: teamName?.name || memberName?.name || 'no host',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;

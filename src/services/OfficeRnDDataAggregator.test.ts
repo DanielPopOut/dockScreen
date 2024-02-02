@@ -26,10 +26,10 @@ test('combineOfficeRnDData combines a set of single entry data items correctly',
         timezone: "", 
         resourceId: "0", 
         team: "2",
-        member: "4",
+        member: ""
       }],
       [{_id: "2", name: "Test Team"}],
-      [{_id: "4", name: "Test Member"}],
+      [],
     )
   ).toStrictEqual(
     [{
@@ -40,8 +40,7 @@ test('combineOfficeRnDData combines a set of single entry data items correctly',
       room: "Test Room",
       floor: "Test Floor",
       summary: "",
-      team: "Test Team",
-      member: "Test Member"
+      host: "Test Team",
     }]
   )
 })

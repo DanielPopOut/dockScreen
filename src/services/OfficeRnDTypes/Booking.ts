@@ -21,8 +21,7 @@ export type AppBooking = {
   room: string;
   floor: string;
   summary: string;
-  team: string;
-  member: string;
+  host: string;
 };
 
 // Below is an exmaple of the Booking type from the OfficeRnD API
