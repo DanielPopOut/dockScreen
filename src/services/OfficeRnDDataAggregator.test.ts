@@ -12,7 +12,7 @@ test('combineMeetingRoomsAndFloors combines two single entry items that match', 
   )
 })
 
-test('combineOfficeRnDData combines a set of single entry data items correctly', () => {
+test('combineOfficeRnDDataIntoAppBookings combines a set of single entry data items correctly', () => {
   const aggregator = new OfficeRnDDataAggregator();
   expect(
     aggregator.combineOfficeRnDDataIntoAppBookings(
@@ -41,6 +41,39 @@ test('combineOfficeRnDData combines a set of single entry data items correctly',
       floor: "Test Floor",
       summary: "",
       host: "Test Team",
+    }]
+  )
+})
+
+test('combineOfficeRnDDataIntoAppBookings uses member name as host when no team', () => {
+  const aggregator = new OfficeRnDDataAggregator();
+  expect(
+    aggregator.combineOfficeRnDDataIntoAppBookings(
+      [],
+      [],
+      [{
+        _id: "", 
+        summary: "", 
+        start: {dateTime: ""}, 
+        end: {dateTime: ""}, 
+        timezone: "", 
+        resourceId: "", 
+        team: "",
+        member: "0"
+      }],
+      [],
+      [{_id: "0", name: "Test Member"}],
+    )
+  ).toStrictEqual(
+    [{
+      _id: "",
+      startDateTime: "",
+      endDateTime: "",
+      timezone: "",
+      room: "no meeting room",
+      floor: "no floor",
+      summary: "",
+      host: "Test Member",
     }]
   )
 })
