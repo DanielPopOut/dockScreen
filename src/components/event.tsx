@@ -11,14 +11,30 @@ export default function Event({ event }: { event: AppBooking }) {
           </div>
           <div className='eventDescription'>{event.summary}</div>
         </div>
-        <div className='eventTime'>
-          {formatTime(new Date(event.startDateTime))} <br />
-          - <br />
-          {formatTime(new Date(event.endDateTime))}
-        </div>
+        <EventTimeComponent start={new Date(event.startDateTime)} end={new Date(event.endDateTime)} />
       </div>
     </div>
   );
+}
+
+const isBookingAllDay = (start: Date, end: Date): boolean => {
+  const dayInMilliseconds = 1000 * 60 * 60 * 24;
+  return (end.valueOf() - start.valueOf()) == dayInMilliseconds;
+};
+
+function EventTimeComponent ({start, end}: {start: Date, end: Date}) {
+  return isBookingAllDay(start, end) ? 
+  (
+    <div className='eventTime'>All Day</div>
+  )
+    :
+  (
+    <div className='eventTime'>
+      {formatTime(new Date(start))} <br />
+      - <br />
+      {formatTime(new Date(end))}
+    </div>
+  )
 }
 
 const formatTime = (date: Date | number) => {
