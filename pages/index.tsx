@@ -40,22 +40,22 @@ export default function Home() {
   return (
     <div className='event_page'>
       <div className='right_section'>
-      <div className='display-time'>
-        <span id='timeValue'>
-          {Intl.DateTimeFormat('en-US', {
-            minute: 'numeric',
-            hour: 'numeric',
-          }).format(currentTime)}
-        </span>
-        <span>
-          {Intl.DateTimeFormat('en-US', {
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }).format(currentTime)}
-        </span>
-      </div>
+        <div className='display-time'>
+          <span id='timeValue'>
+            {Intl.DateTimeFormat('en-US', {
+              minute: 'numeric',
+              hour: 'numeric',
+            }).format(currentTime)}
+          </span>
+          <span>
+            {Intl.DateTimeFormat('en-US', {
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }).format(currentTime)}
+          </span>
+        </div>
       <img className='logo' src='theDockLogo.png' />
       </div>
       <div className='left_section'>
