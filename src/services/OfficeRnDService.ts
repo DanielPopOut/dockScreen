@@ -4,6 +4,7 @@ import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
 import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
 import { OfficeRnDDataAggregator } from './OfficeRnDDataAggregator';
+import { OfficeRnDMember } from './OfficeRnDTypes/Member';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
@@ -59,11 +60,13 @@ export class OfficeRnDService {
     const meetingRooms = await this.getMeetingRooms();
     const events = await this.getEvents(dateStart, dateEnd);
     const teams = await this.getTeams();
+    const members = await this.getMembers(events);
     return this.aggregator.combineOfficeRnDDataIntoAppBookings(
       floors,
       meetingRooms,
       events,
-      teams
+      teams,
+      members,
     );
   };
 
@@ -99,6 +102,17 @@ export class OfficeRnDService {
     } while (currNextPointer != '');
     return teamsArray;
   };
+
+  private getMembers = async (bookings: OfficeRndBooking[]) => {
+    const memberPromises = bookings.map<Promise<OfficeRnDMember>>(
+      booking => { return this.getMember(booking); }
+    );
+    return Promise.all(memberPromises);
+  };
+
+  private getMember = async (booking: OfficeRndBooking): Promise<OfficeRnDMember> => {
+    return this.fetchWithToken<OfficeRnDMember>(`${this.BASE_API_URL}/members/${booking.member}`);
+  }
 }
 
 const AuthOptions = {

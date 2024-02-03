@@ -7,7 +7,7 @@ export default function Event({ event }: { event: AppBooking }) {
       <div className='eventDetails'>
         <div className='eventLeft'>
           <div className='eventTitle'>
-            {event.team} - {event.floor} - {event.room}
+            {event.host} - {event.floor} - {event.room}
           </div>
           <div className='eventDescription'>{event.summary}</div>
         </div>

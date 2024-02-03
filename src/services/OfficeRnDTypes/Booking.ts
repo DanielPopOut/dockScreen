@@ -10,6 +10,7 @@ export type OfficeRndBooking = {
   timezone: string;
   resourceId: string;
   team: string;
+  member: string;
 };
 
 export type AppBooking = {
@@ -20,7 +21,7 @@ export type AppBooking = {
   room: string;
   floor: string;
   summary: string;
-  team: string;
+  host: string;
 };
 
 // Below is an exmaple of the Booking type from the OfficeRnD API
