@@ -74,24 +74,6 @@ export default function Home() {
           </div>
         </Section>
       </div>
-      {/* <div className={`${styles.left_section} ${styles.right}`}> */}
-      <div className='right_section'>
-        
-        {/* <Section title='EventBrite Right Now'>
-          <div className='event_section__list'>
-            {eventBriteEventsNow.map((event) => {
-              return <EventBriteEvent eventBriteEvent={event} />;
-            })}
-          </div>
-        </Section>
-        <Section title='EventBrite'>
-          <div className='event_section__list'>
-            {eventBriteEventsComingSoon.map((event) => {
-              return <EventBriteEvent eventBriteEvent={event} />;
-            })}
-          </div>
-        </Section> */}
-      </div>
     </div>
   );
 }
