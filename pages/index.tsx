@@ -39,6 +39,7 @@ export default function Home() {
 
   return (
     <div className='event_page'>
+      <div className='right_section'>
       <div className='display-time'>
         <span id='timeValue'>
           {Intl.DateTimeFormat('en-US', {
@@ -54,6 +55,8 @@ export default function Home() {
             day: 'numeric',
           }).format(currentTime)}
         </span>
+      </div>
+      <img className='logo' src='theDockLogo.png' />
       </div>
       <div className='left_section'>
         <Section title='Happening right now'>
@@ -73,7 +76,8 @@ export default function Home() {
       </div>
       {/* <div className={`${styles.left_section} ${styles.right}`}> */}
       <div className='right_section'>
-        <Section title='EventBrite Right Now'>
+        
+        {/* <Section title='EventBrite Right Now'>
           <div className='event_section__list'>
             {eventBriteEventsNow.map((event) => {
               return <EventBriteEvent eventBriteEvent={event} />;
@@ -86,7 +90,7 @@ export default function Home() {
               return <EventBriteEvent eventBriteEvent={event} />;
             })}
           </div>
-        </Section>
+        </Section> */}
       </div>
     </div>
   );
