@@ -104,14 +104,15 @@ export class OfficeRnDService {
   };
 
   private getMembers = async (bookings: OfficeRndBooking[]) => {
-    let memberPromises = new Array<Promise<OfficeRnDMember>>();
-    bookings.forEach(async (booking) => {
-      memberPromises.push(this.fetchWithToken<OfficeRnDMember>(
-        `${this.BASE_API_URL}/members/${booking.member}`
-      ));
-    });
-    return await Promise.all(memberPromises);
+    const memberPromises = bookings.map<Promise<OfficeRnDMember>>(
+      booking => { return this.getMember(booking); }
+    );
+    return Promise.all(memberPromises);
   };
+
+  private getMember = async (booking: OfficeRndBooking): Promise<OfficeRnDMember> => {
+    return this.fetchWithToken<OfficeRnDMember>(`${this.BASE_API_URL}/members/${booking.member}`);
+  }
 }
 
 const AuthOptions = {

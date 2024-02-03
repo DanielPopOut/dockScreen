@@ -21,8 +21,8 @@ export class OfficeRnDDataAggregator {
     const membersById = keyBy(members, '_id');
     const eventsWithMeetingRooms = events.map((event) => {
       const meetingRoom = meetingRoomsById[event.resourceId];
-      const teamName = teamsById[event.team];
-      const memberName = membersById[event.member];
+      const team = teamsById[event.team];
+      const member = membersById[event.member];
       return {
         _id: event._id,
         summary: event.summary,
@@ -31,7 +31,7 @@ export class OfficeRnDDataAggregator {
         timezone: event.timezone,
         room: meetingRoom?.name || 'no meeting room',
         floor: meetingRoom?.floor || 'no floor',
-        host: teamName?.name || memberName?.name || 'no host',
+        host: team?.name || member?.name || 'no host',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;
