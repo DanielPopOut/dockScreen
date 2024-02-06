@@ -1,4 +1,4 @@
-import Event, { EventBriteEvent } from '@/src/components/event';
+import Event from '@/src/components/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
@@ -39,6 +39,22 @@ export default function Home() {
 
   return (
     <div className='event_page'>
+      <div className='left_section'>
+        <Section title='Happening right now'>
+          <div className='event_section__list'>
+            {eventsHappeningNow.map((event) => {
+              return <Event event={event} key={event._id} />;
+            })}
+          </div>
+        </Section>
+        <Section title='Later today'>
+          <div className='event_section__list'>
+            {eventsComingSoon.map((event) => {
+              return <Event event={event} key={event._id} />;
+            })}
+          </div>
+        </Section>
+      </div>
       <div className='right_section'>
         <div className='display-time'>
           <span id='timeValue'>
@@ -56,23 +72,7 @@ export default function Home() {
             }).format(currentTime)}
           </span>
         </div>
-      <img className='logo' src='theDockLogo.png' />
-      </div>
-      <div className='left_section'>
-        <Section title='Happening right now'>
-          <div className='event_section__list'>
-            {eventsHappeningNow.map((event) => {
-              return <Event event={event} key={event._id} />;
-            })}
-          </div>
-        </Section>
-        <Section title='Later today'>
-          <div className='event_section__list'>
-            {eventsComingSoon.map((event) => {
-              return <Event event={event} key={event._id} />;
-            })}
-          </div>
-        </Section>
+        <img className='logo' src='theDockLogo.png' />
       </div>
     </div>
   );

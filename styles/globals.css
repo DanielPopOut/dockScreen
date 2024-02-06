@@ -24,7 +24,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  overflow-y: scroll; 
+  overflow-y: scroll;
 }
 
 body {
@@ -61,8 +61,6 @@ span {
 }
 
 .display-time {
-  position: fixed;
-  right: 3rem;
   font-size: 1rem;
   font-weight: bold;
   border-radius: 5px;
@@ -75,19 +73,19 @@ span {
 .event_page {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  padding: 3rem;
+  gap: 1rem;
 }
 
 .left_section {
   width: 50%;
   display: flex;
-  padding: 3rem;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
   flex: 1 0 0;
   align-self: stretch;
-  height: 100%;
+  min-height: 100%;
 }
 
 .event_section {
@@ -118,20 +116,19 @@ span {
 }
 
 .right_section {
-  position: fixed;
-  right: 0;
-  height: 100%;
   width: 50%;
-  padding: 3rem; /* TODO: I don't understand how this works please help @DanielPopOut */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .event {
   background: red;
   border: 2px solid #dddddd;
   border-radius: 5px;
-  width: 500px;
+  width: 100%;
   min-height: 100px;
-  width: 600px;
   align-content: space-between;
   padding: 0.8rem 1.6rem;
   display: flex;
@@ -172,7 +169,6 @@ span {
 
 .logo {
   height: 20rem;
-  bottom: 3rem;
-  right: 3rem;
-  position: absolute;
+  object-fit: contain;
+  object-position: right;
 }
