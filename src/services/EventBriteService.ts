@@ -31,6 +31,8 @@ export type ProcessedEventBriteData = {
   name: string;
   timeStart: string;
   timeEnd: string;
+  startDateTime: string;
+  endDateTime: string;
   description: string;
   picUrl: string;
 };
@@ -58,6 +60,8 @@ const convertEventBriteData = (eventBriteData: BaseEventBriteData) => {
   let processedEventBriteData: ProcessedEventBriteData = {
     location: eventBriteData['venue_id'],
     name: eventBriteData['name']['text'],
+    startDateTime: eventBriteData['start']['utc'],
+    endDateTime: eventBriteData['end']['utc'],
     timeStart: new Date(eventBriteData['start']['utc']).toLocaleTimeString(),
     timeEnd: new Date(eventBriteData['end']['utc']).toLocaleTimeString(),
     description: eventBriteData['description']['text'],
