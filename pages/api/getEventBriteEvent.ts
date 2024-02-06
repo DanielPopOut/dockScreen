@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { EventBriteService } from '../../src/services/EventBriteService';
-import { SeparateStartedAndUpcomingEventsFromEventBrite } from '../dataProcessing/processEvents';
+import { SeparateStartedAndUpcomingEvents } from '../dataProcessing/processEvents';
 
 function convertTestDate(lessEventOption = false, option = 'en') {
   if (option == 'de') {
@@ -43,12 +43,12 @@ export default async function handler(
   // order_by asc in query so we don't need to sort it.
   let returnResult;
   if (test) {
-    returnResult = SeparateStartedAndUpcomingEventsFromEventBrite(
+    returnResult = SeparateStartedAndUpcomingEvents(
       eventBriteEvents,
       new Date(nowDate),
     );
   } else {
-    returnResult = SeparateStartedAndUpcomingEventsFromEventBrite(
+    returnResult = SeparateStartedAndUpcomingEvents(
       eventBriteEvents,
       new Date(),
     );
