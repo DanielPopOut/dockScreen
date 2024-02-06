@@ -1,4 +1,4 @@
-import Event, { EventBriteEvent } from '@/src/components/event';
+import Event from '@/src/components/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
 import { useInterval } from './realTime';
@@ -39,22 +39,6 @@ export default function Home() {
 
   return (
     <div className='event_page'>
-      <div className='display-time'>
-        <span id='timeValue'>
-          {Intl.DateTimeFormat('en-US', {
-            minute: 'numeric',
-            hour: 'numeric',
-          }).format(currentTime)}
-        </span>
-        <span>
-          {Intl.DateTimeFormat('en-US', {
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }).format(currentTime)}
-        </span>
-      </div>
       <div className='left_section'>
         <Section title='Happening right now'>
           <div className='event_section__list'>
@@ -71,22 +55,24 @@ export default function Home() {
           </div>
         </Section>
       </div>
-      {/* <div className={`${styles.left_section} ${styles.right}`}> */}
       <div className='right_section'>
-        <Section title='EventBrite Right Now'>
-          <div className='event_section__list'>
-            {eventBriteEventsNow.map((event) => {
-              return <EventBriteEvent eventBriteEvent={event} />;
-            })}
-          </div>
-        </Section>
-        <Section title='EventBrite'>
-          <div className='event_section__list'>
-            {eventBriteEventsComingSoon.map((event) => {
-              return <EventBriteEvent eventBriteEvent={event} />;
-            })}
-          </div>
-        </Section>
+        <div className='display-time'>
+          <span id='timeValue'>
+            {Intl.DateTimeFormat('en-US', {
+              minute: 'numeric',
+              hour: 'numeric',
+            }).format(currentTime)}
+          </span>
+          <span>
+            {Intl.DateTimeFormat('en-US', {
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }).format(currentTime)}
+          </span>
+        </div>
+        <img className='logo' src='theDockLogo.png' />
       </div>
     </div>
   );
