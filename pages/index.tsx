@@ -72,7 +72,7 @@ export default function Home() {
             }).format(currentTime)}
           </span>
         </div>
-        <img className='logo' src='theDockLogo.png' />
+        <img className='logo' src='theDockLogoSquareColors.png' />
       </div>
     </div>
   );
