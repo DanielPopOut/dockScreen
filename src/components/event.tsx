@@ -1,3 +1,4 @@
+import { COLOR_USAGES } from '../constant/COLOR_USAGES';
 import { AppBooking } from '../services/OfficeRnDTypes/Booking';
 
 export default function Event({ event }: { event: AppBooking }) {
@@ -46,10 +47,10 @@ const formatTime = (date: Date | number) => {
 
 const getEventStyle = (event: AppBooking) => {
   if (event.floor.includes('1')) {
-    return { backgroundColor: '#FFE6B5' };
+    return { backgroundColor: COLOR_USAGES.FLOOR_1 };
   }
   if (event.floor.includes('3')) {
-    return { backgroundColor: '#D2FFEA' };
+    return { backgroundColor: COLOR_USAGES.FLOOR_3 };
   }
 };
 
