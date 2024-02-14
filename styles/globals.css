@@ -63,14 +63,14 @@ span {
 }
 
 .display-time {
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
   border-radius: 5px;
   font-family: Kollektif;
 }
 
 #timeValue {
-  font-size: 2rem;
+  font-size: 3rem;
 }
 
 .event_page {
