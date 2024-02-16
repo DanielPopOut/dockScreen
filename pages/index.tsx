@@ -27,9 +27,9 @@ export default function Home() {
     fetch('/api/getEvents')
       .then((res) => res.json())
       .then((apiEventData) => setEventData(apiEventData));
-    fetch('/api/getEventBriteEvent')
-      .then((res) => res.json())
-      .then((apiEventBriteEvent) => setEventBriteData(apiEventBriteEvent));
+    // fetch('/api/getEventBriteEvent')
+    //   .then((res) => res.json())
+    //   .then((apiEventBriteEvent) => setEventBriteData(apiEventBriteEvent));
   }, TIME_TO_GET_REQUEST);
 
   const eventsHappeningNow = eventData.started;
@@ -87,6 +87,6 @@ const Section = (props: PropsWithChildren<{ title: string }>) => {
   );
 };
 
-const SectionTitle = ({ children }: PropsWithChildren) => {
+const SectionTitle = ({ children }: PropsWithChildren<{}>) => {
   return <div className='event_section__title'>{children}</div>;
 };
