@@ -1,0 +1,43 @@
+@font-face {
+  font-family: 'Kollektif';
+  font-style: normal;
+  font-weight: normal;
+  src: url('/fonts/kollektif/Kollektif.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Kollektif';
+  font-style: italic;
+  font-weight: normal;
+  src: url('/fonts/kollektif/Kollektif-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Kollektif';
+  font-style: normal;
+  font-weight: bold;
+  src: url('/fonts/kollektif/Kollektif-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Kollektif';
+  font-style: italic;
+  font-weight: bold;
+  src: url('/fonts/kollektif/Kollektif-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 10 1000;
+  src: url('/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf')
+    format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 10 1000;
+  src: url('/fonts/Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf')
+    format('truetype');
+}
