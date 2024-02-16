@@ -4,7 +4,7 @@ import { OfficeRnDService } from '../../src/services/OfficeRnDService';
 import {
   SeparateStartedAndUpcomingEvents,
   TrimExpiredEvents,
-} from '../dataProcessing/processEvents';
+} from '../../src/dataProcessing/processEvents';
 
 export default async function handler(
   req: NextApiRequest,

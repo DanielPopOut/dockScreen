@@ -1,5 +1,7 @@
 import React from 'react';
 
+export default function Nothing() {}
+
 // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 // We can set Dynamic Variable Input on the go to delay with useInterval instead useEffect --> Not Exactly needed.
 export const useInterval = (callback: Function, delay: number) => {
