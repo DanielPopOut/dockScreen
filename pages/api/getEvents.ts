@@ -1,10 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { OfficeRnDService } from '../../src/services/OfficeRnDService';
 import {
   SeparateStartedAndUpcomingEvents,
   TrimExpiredEvents,
-} from '../dataProcessing/processEvents';
+} from '../../src/misc/dataProcessing/processEvents';
+import { OfficeRnDService } from '../../src/services/OfficeRnDService';
 
 export default async function handler(
   req: NextApiRequest,
