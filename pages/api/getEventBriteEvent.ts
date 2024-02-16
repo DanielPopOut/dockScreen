@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { SeparateStartedAndUpcomingEvents } from '../../src/misc/dataProcessing/processEvents';
 import { EventBriteService } from '../../src/services/EventBriteService';
-import { SeparateStartedAndUpcomingEvents } from '../dataProcessing/processEvents';
 
 function convertTestDate(lessEventOption = false, option = 'en') {
   if (option == 'de') {

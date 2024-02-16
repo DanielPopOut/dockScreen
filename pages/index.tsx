@@ -1,7 +1,7 @@
 import Event from '@/src/components/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
-import { useInterval } from './realTime';
+import { useInterval } from '../src/misc/realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
