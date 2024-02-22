@@ -59,7 +59,7 @@ export class OfficeRnDService {
     const floors = await this.getFloors();
     const meetingRooms = await this.getMeetingRooms();
     const events = await this.getEvents(dateStart, dateEnd);
-    const teams = await this.getTeams();
+    const teams = await this.getTeams(events);
     const members = await this.getMembers(events);
     return this.aggregator.combineOfficeRnDDataIntoAppBookings(
       floors,
@@ -84,24 +84,16 @@ export class OfficeRnDService {
     return floorsArray
   };
 
-  private getTeams = async () => {
-    let currNextPointer = '';
-    const baseGetTeamsURL = `${this.BASE_API_URL}/teams?$limit=100`;
-    let teamsArray = new Array<OfficeRnDTeam>();
-    do {
-      const currURL =
-        currNextPointer == ''
-          ? baseGetTeamsURL
-          : baseGetTeamsURL + `&$next=` + currNextPointer;
+  private getTeams = async(bookings: OfficeRndBooking[]) => {
+    const teamPromises = bookings.map<Promise<OfficeRnDTeam>>(
+      booking => { return this.getTeam(booking); }
+    );
+    return Promise.all(teamPromises);
+  }
 
-      let currFetch = await this.rawFetchWithToken<OfficeRnDTeam[]>(currURL);
-      const body = (await currFetch.json()) as OfficeRnDTeam[];
-      teamsArray = teamsArray.concat(body);
-      const fetchNextCursor = currFetch.headers.get('rnd-cursor-next');
-      currNextPointer = fetchNextCursor != null ? fetchNextCursor : '';
-    } while (currNextPointer != '');
-    return teamsArray;
-  };
+  private getTeam(booking: OfficeRndBooking) {
+    return this.fetchWithToken<OfficeRnDTeam>(`${this.BASE_API_URL}/teams/${booking.team}`)
+  }
 
   private getMembers = async (bookings: OfficeRndBooking[]) => {
     const memberPromises = bookings.map<Promise<OfficeRnDMember>>(
