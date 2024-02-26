@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <div className='event_page'>
-      <div className='child_section left_section'>
+      <div className='child_section left_section no-scrollbar'>
         <Section title='Happening right now'>
           <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
