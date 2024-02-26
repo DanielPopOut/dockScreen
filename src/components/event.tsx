@@ -16,7 +16,9 @@ export default function Event({ event }: { event: AppBooking }) {
           />
         </div>
         <div className='eventTitle'>{event.host}</div>
-        <div className='eventDescription'>{event.summary}</div>
+        {event.summary ? (
+          <div className='eventDescription'>{event.summary}</div>
+        ) : null}
       </div>
     </div>
   );
