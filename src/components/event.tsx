@@ -3,6 +3,16 @@ import { AppBooking } from '../services/OfficeRnDTypes/Booking';
 
 export default function Event({ event }: { event: AppBooking }) {
   const style = getEventStyle(event);
+  const dataToShow = event.summary
+    ? {
+        title: event.summary,
+        description: event.host,
+      }
+    : {
+        title: event.host,
+        description: event.summary,
+      };
+
   return (
     <div className='event' style={style}>
       <div className='eventDetails'>
@@ -15,9 +25,9 @@ export default function Event({ event }: { event: AppBooking }) {
             end={new Date(event.endDateTime)}
           />
         </div>
-        <div className='eventTitle'>{event.host}</div>
-        {event.summary ? (
-          <div className='eventDescription'>{event.summary}</div>
+        <div className='eventTitle'>{dataToShow.title}</div>
+        {dataToShow.description ? (
+          <div className='eventDescription'>{dataToShow.description}</div>
         ) : null}
       </div>
     </div>
