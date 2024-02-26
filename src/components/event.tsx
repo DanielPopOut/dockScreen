@@ -25,7 +25,7 @@ export default function Event({ event }: { event: AppBooking }) {
             end={new Date(event.endDateTime)}
           />
         </div>
-        <div className='eventTitle'>{dataToShow.title}</div>
+        <div className='eventTitle kollectif'>{dataToShow.title}</div>
         {dataToShow.description ? (
           <div className='eventDescription'>{dataToShow.description}</div>
         ) : null}
