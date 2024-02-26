@@ -7,15 +7,18 @@ export default function Event({ event }: { event: AppBooking }) {
     <div className='event' style={style}>
       <div className='eventDetails'>
         <div className='eventLeft'>
-          <div className='eventTitle'>
-            {event.host} - {event.floor} - {event.room}
+          <div className='eventRoomAndTime'>
+            <span>
+              {event.floor} - {event.room}
+            </span>
+            <EventTimeComponent
+              start={new Date(event.startDateTime)}
+              end={new Date(event.endDateTime)}
+            />
           </div>
+          <div className='eventTitle'>{event.host}</div>
           <div className='eventDescription'>{event.summary}</div>
         </div>
-        <EventTimeComponent
-          start={new Date(event.startDateTime)}
-          end={new Date(event.endDateTime)}
-        />
       </div>
     </div>
   );
@@ -31,8 +34,7 @@ function EventTimeComponent({ start, end }: { start: Date; end: Date }) {
     <div className='eventTime'>All Day</div>
   ) : (
     <div className='eventTime'>
-      {formatTime(new Date(start))} <br />
-      - <br />
+      {formatTime(new Date(start))} {' - '}
       {formatTime(new Date(end))}
     </div>
   );

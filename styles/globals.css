@@ -161,10 +161,13 @@ span {
   font-weight: 600;
 }
 
+.eventRoomAndTime {
+  display: flex;
+  justify-content: space-between;
+}
+
 .eventTime {
   font-size: 1rem;
-  margin-left: auto;
-  margin-right: 0px;
   text-align: center;
 }
 
