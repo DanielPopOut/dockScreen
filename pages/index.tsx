@@ -1,7 +1,7 @@
 import Event from '@/src/components/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
-import { useInterval } from './realTime';
+import { useInterval } from '../src/misc/realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
 const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
@@ -27,9 +27,9 @@ export default function Home() {
     fetch('/api/getEvents')
       .then((res) => res.json())
       .then((apiEventData) => setEventData(apiEventData));
-    fetch('/api/getEventBriteEvent')
-      .then((res) => res.json())
-      .then((apiEventBriteEvent) => setEventBriteData(apiEventBriteEvent));
+    // fetch('/api/getEventBriteEvent')
+    //   .then((res) => res.json())
+    //   .then((apiEventBriteEvent) => setEventBriteData(apiEventBriteEvent));
   }, TIME_TO_GET_REQUEST);
 
   const eventsHappeningNow = eventData.started;
@@ -87,6 +87,6 @@ const Section = (props: PropsWithChildren<{ title: string }>) => {
   );
 };
 
-const SectionTitle = ({ children }: PropsWithChildren) => {
+const SectionTitle = ({ children }: PropsWithChildren<{}>) => {
   return <div className='event_section__title'>{children}</div>;
 };
