@@ -6,19 +6,17 @@ export default function Event({ event }: { event: AppBooking }) {
   return (
     <div className='event' style={style}>
       <div className='eventDetails'>
-        <div className='eventLeft'>
-          <div className='eventRoomAndTime'>
-            <span>
-              {event.floor} - {event.room}
-            </span>
-            <EventTimeComponent
-              start={new Date(event.startDateTime)}
-              end={new Date(event.endDateTime)}
-            />
-          </div>
-          <div className='eventTitle'>{event.host}</div>
-          <div className='eventDescription'>{event.summary}</div>
+        <div className='eventRoomAndTime'>
+          <span>
+            {event.floor} - {event.room}
+          </span>
+          <EventTimeComponent
+            start={new Date(event.startDateTime)}
+            end={new Date(event.endDateTime)}
+          />
         </div>
+        <div className='eventTitle'>{event.host}</div>
+        <div className='eventDescription'>{event.summary}</div>
       </div>
     </div>
   );
