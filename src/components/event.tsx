@@ -3,19 +3,32 @@ import { AppBooking } from '../services/OfficeRnDTypes/Booking';
 
 export default function Event({ event }: { event: AppBooking }) {
   const style = getEventStyle(event);
+  const dataToShow = event.summary
+    ? {
+        title: event.summary,
+        description: event.host,
+      }
+    : {
+        title: event.host,
+        description: event.summary,
+      };
+
   return (
     <div className='event' style={style}>
       <div className='eventDetails'>
-        <div className='eventLeft'>
-          <div className='eventTitle'>
-            {event.host} - {event.floor} - {event.room}
-          </div>
-          <div className='eventDescription'>{event.summary}</div>
+        <div className='eventRoomAndTime'>
+          <span>
+            {event.floor} - {event.room}
+          </span>
+          <EventTimeComponent
+            start={new Date(event.startDateTime)}
+            end={new Date(event.endDateTime)}
+          />
         </div>
-        <EventTimeComponent
-          start={new Date(event.startDateTime)}
-          end={new Date(event.endDateTime)}
-        />
+        <div className='eventTitle kollectif'>{dataToShow.title}</div>
+        {dataToShow.description ? (
+          <div className='eventDescription'>{dataToShow.description}</div>
+        ) : null}
       </div>
     </div>
   );
@@ -31,8 +44,7 @@ function EventTimeComponent({ start, end }: { start: Date; end: Date }) {
     <div className='eventTime'>All Day</div>
   ) : (
     <div className='eventTime'>
-      {formatTime(new Date(start))} <br />
-      - <br />
+      {formatTime(new Date(start))} {' - '}
       {formatTime(new Date(end))}
     </div>
   );
