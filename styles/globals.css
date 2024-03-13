@@ -50,11 +50,6 @@ a {
 /* Shamelessly steal Style From Here https://codepen.io/WhisnuYs/pen/oNLBEvv */
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
-span {
-  text-align: right;
-  display: block;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -62,6 +57,9 @@ span {
 }
 
 .display-time {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
   font-size: 1.5rem;
   font-weight: bold;
   border-radius: 0.32rem;
