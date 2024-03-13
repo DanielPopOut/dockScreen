@@ -70,8 +70,8 @@ test('combineOfficeRnDDataIntoAppBookings uses member name as host when no team'
       startDateTime: "",
       endDateTime: "",
       timezone: "",
-      room: "no meeting room",
-      floor: "no floor",
+      room: '',
+      floor: '',
       summary: "",
       host: "Test Member",
     }]

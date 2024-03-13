@@ -1,10 +1,9 @@
-import { keyBy } from '../helpers/keyBy';
+import { OfficeRnDDataAggregator } from './OfficeRnDDataAggregator';
 import { AppBooking, OfficeRndBooking } from './OfficeRnDTypes/Booking';
 import { OfficeRnDFloor } from './OfficeRnDTypes/Floor';
 import { OfficeRndMeetingRoom } from './OfficeRnDTypes/MeetingRoom';
-import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
-import { OfficeRnDDataAggregator } from './OfficeRnDDataAggregator';
 import { OfficeRnDMember } from './OfficeRnDTypes/Member';
+import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
 
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
@@ -39,6 +38,9 @@ export class OfficeRnDService {
 
   private fetchWithToken = async <T extends {}>(url: string) => {
     let fetchedData = await this.rawFetchWithToken(url);
+    if (fetchedData.status > 400) {
+      throw new Error("Tried to fetch something that doesn't exist");
+    }
     return (await fetchedData.json()) as T;
   };
 
@@ -84,21 +86,25 @@ export class OfficeRnDService {
     return floorsArray
   };
 
-  private getTeams = async(bookings: OfficeRndBooking[]) => {
-    const teamPromises = bookings.map<Promise<OfficeRnDTeam>>(
-      booking => { return this.getTeam(booking); }
-    );
+  private getTeams = async (bookings: OfficeRndBooking[]) => {
+    const teamPromises = bookings
+      .filter((booking) => booking.team)
+      .map<Promise<OfficeRnDTeam>>((booking) => {
+        return this.getTeam(booking);
+      });
     return Promise.all(teamPromises);
-  }
+  };
 
   private getTeam(booking: OfficeRndBooking) {
     return this.fetchWithToken<OfficeRnDTeam>(`${this.BASE_API_URL}/teams/${booking.team}`)
   }
 
   private getMembers = async (bookings: OfficeRndBooking[]) => {
-    const memberPromises = bookings.map<Promise<OfficeRnDMember>>(
-      booking => { return this.getMember(booking); }
-    );
+    const memberPromises = bookings
+      .filter((booking) => booking.member)
+      .map<Promise<OfficeRnDMember>>((booking) => {
+        return this.getMember(booking);
+      });
     return Promise.all(memberPromises);
   };
 
