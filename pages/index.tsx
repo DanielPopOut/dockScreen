@@ -26,7 +26,11 @@ export default function Home() {
   useInterval(() => {
     fetch('/api/getEvents')
       .then((res) => res.json())
-      .then((apiEventData) => setEventData(apiEventData));
+      .then((apiEventData) => setEventData(apiEventData))
+      .catch((e) => {
+        console.error('Error fetching events');
+        console.error(e);
+      });
     // fetch('/api/getEventBriteEvent')
     //   .then((res) => res.json())
     //   .then((apiEventBriteEvent) => setEventBriteData(apiEventBriteEvent));
