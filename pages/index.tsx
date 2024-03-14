@@ -41,7 +41,7 @@ export default function Home() {
     <div className='event_page'>
       <div className='child_section left_section no-scrollbar'>
         <Section title='Happening right now'>
-          <div className='event_section__list'>
+          <div className='event_section__list' style={styles.scrollView}>
             {eventsHappeningNow.map((event) => {
               return <Event event={event} key={event._id} />;
             })}
@@ -78,7 +78,7 @@ export default function Home() {
   );
 }
 
-const Section = (props: PropsWithChildren<{ title: string }>) => {
+const Section = (props: PropsWithChildren<{ title: string; }>) => {
   return (
     <section className='event_section'>
       <SectionTitle>{props.title}</SectionTitle>

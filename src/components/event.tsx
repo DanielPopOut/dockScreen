@@ -1,8 +1,17 @@
 import { COLOR_USAGES } from '../constant/COLOR_USAGES';
 import { AppBooking } from '../services/OfficeRnDTypes/Booking';
+import React, { useEffect, useRef } from 'react'
 
 export default function Event({ event }: { event: AppBooking }) {
   const style = getEventStyle(event);
+
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth",
+    block: 'start', })
+  }
+
   const dataToShow = event.summary
     ? {
         title: event.summary,
@@ -13,8 +22,12 @@ export default function Event({ event }: { event: AppBooking }) {
         description: event.summary,
       };
 
+      useEffect(() => {
+        scrollToBottom()
+      }, [event]);
+
   return (
-    <div className='event' style={style}>
+    <div ref={messagesEndRef} className='event' style={style}>
       <div className='eventDetails'>
         <div className='eventRoomAndTime'>
           <span>
@@ -28,7 +41,7 @@ export default function Event({ event }: { event: AppBooking }) {
         <div className='eventTitle kollectif'>{dataToShow.title}</div>
         {dataToShow.description ? (
           <div className='eventDescription'>{dataToShow.description}</div>
-        ) : null}
+        ) : ''}
       </div>
     </div>
   );
