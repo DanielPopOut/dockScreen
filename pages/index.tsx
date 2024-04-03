@@ -9,10 +9,24 @@ const TIME_TO_GET_REQUEST = 30 * 60 * 1000; // 30 minutes refershing token
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
 
-  // useEffect is fine to use as well. Don't need useInterval
+  // useEffect is fine to use as well. Don't need useInterval 
+  let topBool = true;
+
   useInterval(() => {
     setRealTime(new Date());
   }, TIME_TO_REFRESH);
+
+  useInterval(() => {
+    topBool = false;
+    setCurrentBool(topBool)
+  }, 1000 * 10);
+
+  useInterval(() => {
+    topBool = true;
+    setCurrentBool(topBool)
+  }, 1000 * 20);
+
+  const [currentTopBool, setCurrentBool] = React.useState(topBool);
 
   const [eventData, setEventData] = React.useState({
     started: Array<AppBooking>(),
@@ -41,16 +55,16 @@ export default function Home() {
     <div className='event_page'>
       <div className='child_section left_section no-scrollbar'>
         <Section title='Happening right now'>
-          <div className='event_section__list' style={styles.scrollView}>
+          <div className='event_section__list'>
             {eventsHappeningNow.map((event) => {
-              return <Event event={event} key={event._id} />;
+              return <Event event={event} key={event._id} topBool={currentTopBool}/>;
             })}
           </div>
         </Section>
         <Section title='Later today'>
           <div className='event_section__list'>
             {eventsComingSoon.map((event) => {
-              return <Event event={event} key={event._id} />;
+              return <Event event={event} key={event._id} topBool={currentTopBool} />;
             })}
           </div>
         </Section>
