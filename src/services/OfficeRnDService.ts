@@ -54,13 +54,18 @@ export class OfficeRnDService {
     return fetchedData;
   };
 
+  private filterCanceledEvents = (events: OfficeRndBooking[]) => {
+    return events.filter((event) => !event.canceled);
+  };
+
   getEventsWithMeetingRoomsAndHostingTeam = async (
     dateStart: string,
     dateEnd: string,
   ): Promise<AppBooking[]> => {
     const floors = await this.getFloors();
     const meetingRooms = await this.getMeetingRooms();
-    const events = await this.getEvents(dateStart, dateEnd);
+    const allEvents = await this.getEvents(dateStart, dateEnd);
+    const events = this.filterCanceledEvents(allEvents);
     const teams = await this.getTeams(events);
     const members = await this.getMembers(events);
     return this.aggregator.combineOfficeRnDDataIntoAppBookings(
