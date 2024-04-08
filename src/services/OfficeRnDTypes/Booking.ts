@@ -11,6 +11,7 @@ export type OfficeRndBooking = {
   resourceId: string;
   team: string;
   member: string;
+  canceled?: boolean;
 };
 
 export type AppBooking = {

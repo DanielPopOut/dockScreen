@@ -4,7 +4,7 @@ import React, { PropsWithChildren } from 'react';
 import { useInterval } from '../src/misc/realTime';
 
 const TIME_TO_REFRESH = 1000 * 30; // 30 seconds
-const TIME_TO_GET_REQUEST = 5 * 60 * 1000; // 5 minutes refershing token
+const TIME_TO_GET_REQUEST = 3 * 60 * 1000; // 5 minutes refershing token
 
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
