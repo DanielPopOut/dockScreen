@@ -88,7 +88,7 @@ export class OfficeRnDService {
     let floorsArray = await this.fetchWithToken<OfficeRnDFloor[]>(
       `${this.BASE_API_URL}/floors`,
     );
-    return floorsArray
+    return floorsArray;
   };
 
   private getTeams = async (bookings: OfficeRndBooking[]) => {
@@ -101,7 +101,9 @@ export class OfficeRnDService {
   };
 
   private getTeam(booking: OfficeRndBooking) {
-    return this.fetchWithToken<OfficeRnDTeam>(`${this.BASE_API_URL}/teams/${booking.team}`)
+    return this.fetchWithToken<OfficeRnDTeam>(
+      `${this.BASE_API_URL}/teams/${booking.team}`,
+    );
   }
 
   private getMembers = async (bookings: OfficeRndBooking[]) => {
@@ -113,9 +115,13 @@ export class OfficeRnDService {
     return Promise.all(memberPromises);
   };
 
-  private getMember = async (booking: OfficeRndBooking): Promise<OfficeRnDMember> => {
-    return this.fetchWithToken<OfficeRnDMember>(`${this.BASE_API_URL}/members/${booking.member}`);
-  }
+  private getMember = async (
+    booking: OfficeRndBooking,
+  ): Promise<OfficeRnDMember> => {
+    return this.fetchWithToken<OfficeRnDMember>(
+      `${this.BASE_API_URL}/members/${booking.member}`,
+    );
+  };
 }
 
 const AuthOptions = {
