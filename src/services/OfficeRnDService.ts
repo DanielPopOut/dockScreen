@@ -6,7 +6,7 @@ import { OfficeRnDMember } from './OfficeRnDTypes/Member';
 import { OfficeRnDTeam } from './OfficeRnDTypes/Team';
 
 const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24; // 1 day
-const DEFAULT_CACHE_TIME_IN_MS = ONE_DAY_IN_MS;
+const DEFAULT_CACHE_TIME_IN_MS = 3 * ONE_DAY_IN_MS; // 3days
 export class OfficeRnDService {
   BASE_API_URL = 'https://app.officernd.com/api/v1/organizations/thedock';
   access_token = '';
