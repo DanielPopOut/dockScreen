@@ -50,7 +50,7 @@ export default function Event({ event, topBool }: { event: AppBooking, topBool: 
     <div ref={messageRef} className='event' style={style}>
       <div className='eventDetails'>
         <div className='eventRoomAndTime'>
-          <span>
+          <span className='eventRoom'>
             {event.floor} - {event.room}
           </span>
           <EventTimeComponent
@@ -77,8 +77,8 @@ function EventTimeComponent({ start, end }: { start: Date; end: Date; }) {
     <div className='eventTime'>All Day</div>
   ) : (
     <div className='eventTime'>
-      {formatTime(new Date(start))} {' - '}
-      {formatTime(new Date(end))}
+      <span className='noWrap'>{formatTime(new Date(start))}</span> {' - '}
+      <span className='noWrap'>{formatTime(new Date(end))}</span>
     </div>
   );
 }

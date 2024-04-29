@@ -29,9 +29,9 @@ export class OfficeRnDDataAggregator {
         endDateTime: event.end?.dateTime,
         startDateTime: event.start?.dateTime,
         timezone: event.timezone,
-        room: meetingRoom?.name || 'no meeting room',
-        floor: meetingRoom?.floor || 'no floor',
-        host: team?.name || member?.name || 'no host',
+        room: meetingRoom?.name || '',
+        floor: meetingRoom?.floor || '',
+        host: team?.name || member?.name || '',
       } as AppBooking;
     });
     return eventsWithMeetingRooms;
