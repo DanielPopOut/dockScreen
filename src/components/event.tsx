@@ -3,9 +3,8 @@ import { AppBooking } from '../services/OfficeRnDTypes/Booking';
 import React, { useEffect, useRef } from 'react';
 import { useInterval } from '../misc/realTime';
 
-export default function Event({ event, topBool }: { event: AppBooking, topBool: boolean; }) {
+export default function Event({ event, scrollYes = false, delay = false}: { event: AppBooking, scrollYes: boolean; delay: boolean}) {
   const style = getEventStyle(event);
-
   const messageRef = useRef(null);
   // let scrollFuntion = () => {};
 
@@ -15,23 +14,6 @@ export default function Event({ event, topBool }: { event: AppBooking, topBool: 
       block: 'end',
     });
   };
-
-  // if (topBool) {
-  //   scrollFuntion = () => {
-  //     messageRef.current?.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: 'start',
-  //     });
-  //   };
-  // } else {
-  //   scrollFuntion = () => {
-  //     messageRef.current?.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: 'end',
-  //     });
-  //   };
-  // }
-
   const dataToShow = event.summary
     ? {
       title: event.summary,
@@ -43,7 +25,20 @@ export default function Event({ event, topBool }: { event: AppBooking, topBool: 
     };
 
   useEffect(() => {
-    scrollFuntion();
+    if (delay) {
+      setTimeout(()=>{
+        if (scrollYes == true) {
+          console.log('Scroll Yes '+ dataToShow.title)
+          scrollFuntion();
+        }
+       }, 3000)
+    } else {
+        if (scrollYes == true) {
+          console.log('Scroll Yes with Delay '+ dataToShow.title)
+          scrollFuntion();
+        }
+    }
+
   }, [event]);
 
   return (
@@ -91,6 +86,10 @@ const formatTime = (date: Date | number) => {
 };
 
 const getEventStyle = (event: AppBooking) => {
+  // Default to Floor 1 if nothing is found
+  // if (event.floor === undefined) {
+  //   return { backgroundColor: COLOR_USAGES.FLOOR_1 };
+  // }
   if (event.floor.includes('1')) {
     return { backgroundColor: COLOR_USAGES.FLOOR_1 };
   }

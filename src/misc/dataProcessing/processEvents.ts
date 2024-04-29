@@ -2,11 +2,10 @@ import { ProcessedEventBriteData } from "@/src/services/EventBriteService";
 import { AppBooking } from "@/src/services/OfficeRnDTypes/Booking";
 
 export function TrimExpiredEvents(events: Array<AppBooking>, dateTimeToCompare: Date) {
-    // return events.filter((event) => {
-    //     const eventEndTime = new Date(event.endDateTime);
-    //     return eventEndTime > dateTimeToCompare;
-    // })
-    return events
+    return events.filter((event) => {
+        const eventEndTime = new Date(event.endDateTime);
+        return eventEndTime > dateTimeToCompare;
+    })
 }
 
 interface HasStartDateTime {

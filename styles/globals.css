@@ -177,11 +177,7 @@ a {
 }
 
 .logo {
-<<<<<<< HEAD
-  height: 9rem;
-=======
   height: 11rem;
->>>>>>> 6440f8dd5e1ef5114caa143780a99da222ef1791
   object-fit: contain;
   object-position: right;
 }
