@@ -2,7 +2,7 @@ import Event from '@/src/components/event';
 import { AppBooking } from '@/src/services/OfficeRnDTypes/Booking';
 import React, { PropsWithChildren } from 'react';
 const TIME_TO_REFRESH = 3000; // 3 seconds refresh
-const TIME_TO_GET_REQUEST = 240000; // 4 minutes refershing token
+const TIME_TO_GET_REQUEST = 300000; // 4 minutes refershing token
 
 export default function Home() {
   const [currentTime, setRealTime] = React.useState(new Date());
@@ -74,15 +74,15 @@ export default function Home() {
             {eventsHappeningNow.map((event, index) => {
               // TODO: check if isOverflow is correct
               if (eventsHappeningNow.length - 1 === index) {
-                return <Event event={event} key={event._id} scrollYes={true} delay={true} />;
+                return <Event event={event} key={event._id}/>;
               }
               if (eventsComingSoon.length === 0) {
                 if (index === 0) {
-                  return <Event event={event} key={event._id} scrollYes={true} delay={false} />;
+                  return <Event event={event} key={event._id}/>;
                 }
               }
               else {
-                return <Event event={event} key={event._id} scrollYes={false} delay={false} />;
+                return <Event event={event} key={event._id}/>;
               }
             })}
           </div>
@@ -93,14 +93,14 @@ export default function Home() {
               // TODO: check if isOverflow is correct
               if (eventsHappeningNow.length === 0) {
                 if (eventsHappeningNow.length - 1 === index) {
-                  return <Event event={event} key={event._id} scrollYes={true} delay={true} />;
+                  return <Event event={event} key={event._id}/>;
                 }
               }
               if (index === 0) {
-                return <Event event={event} key={event._id} scrollYes={true} delay={false} />;
+                return <Event event={event} key={event._id}/>;
               }
               else {
-                return <Event event={event} key={event._id} scrollYes={false} delay={false} />;
+                return <Event event={event} key={event._id}/>;
               }
             })}
           </div>
