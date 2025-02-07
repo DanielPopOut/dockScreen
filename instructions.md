@@ -23,4 +23,8 @@ the app, change the node version etc. If all fails you can also delete the app a
 backed up!**
 
 - The app config should look something like this:
+![image](https://github.com/DanielPopOut/dockScreen/assets/46504810/280dd226-cdc3-4718-965d-064977ddb6a6)
+
 ![](fullhost_app_config.png)
+
+Logs can be found in CPanel in Metrics -> Raw Access (screen.thedockvictoria.com.scalecollaborative.ca (SSL))
