@@ -8,20 +8,19 @@ import { OfficeRnDService } from '../../src/services/OfficeRnDService';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   const date = new Date();
   const nowDate = date.toLocaleDateString();
-  date.setDate(date.getDate() + 2);
   const tomorrowDate = date.toLocaleDateString();
-  console.log(nowDate, tomorrowDate);
   const officeRNDService = new OfficeRnDService();
   const events = await officeRNDService.getEventsWithMeetingRoomsAndHostingTeam(
     nowDate,
     tomorrowDate,
   );
 
-  const todayEvents = events.filter((event: any) => {
+  const todayEvents = events
+  .filter((event: any) => {
     return new Date(event.startDateTime).toLocaleDateString() == nowDate;
   });
   const todayEventsSorted = todayEvents.sort(function (a, b) {

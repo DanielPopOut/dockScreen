@@ -12,7 +12,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* --foreground-rgb: 255, 255, 255; */
+    --foreground-rgb: 255, 255, 255;
   }
 }
 
@@ -115,11 +115,15 @@ a {
 .event_section__list {
   display: flex;
   padding: 0.5rem;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: flex-start;
   gap: 0.5rem;
   flex: 1 0 0;
   align-self: stretch;
+
+  overflow: auto;
+  max-height: 100%;
+  flex-direction: column-reverse;
 }
 
 .right_section {

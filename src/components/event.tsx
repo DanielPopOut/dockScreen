@@ -1,20 +1,34 @@
 import { COLOR_USAGES } from '../constant/COLOR_USAGES';
 import { AppBooking } from '../services/OfficeRnDTypes/Booking';
+import React, { useEffect, useRef } from 'react';
 
-export default function Event({ event }: { event: AppBooking }) {
+export default function Event({ event}: { event: AppBooking}) {
   const style = getEventStyle(event);
+  const messageRef = useRef(null);
+
+  const scrollFuntion = () => {
+    messageRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: 'center',
+      inline: 'nearest'
+    });
+  };
   const dataToShow = event.summary
     ? {
-        title: event.summary,
-        description: event.host,
-      }
+      title: event.summary,
+      description: event.host,
+    }
     : {
-        title: event.host,
-        description: event.summary,
-      };
+      title: event.host,
+      description: event.summary,
+    };
+
+  useEffect(() => {
+    scrollFuntion()
+  }, [event]);
 
   return (
-    <div className='event' style={style}>
+    <div ref={messageRef} className='event' style={style}>
       <div className='eventDetails'>
         <div className='eventRoomAndTime'>
           <span className='eventRoom'>
@@ -28,7 +42,7 @@ export default function Event({ event }: { event: AppBooking }) {
         <div className='eventTitle kollectif'>{dataToShow.title}</div>
         {dataToShow.description ? (
           <div className='eventDescription'>{dataToShow.description}</div>
-        ) : null}
+        ) : ''}
       </div>
     </div>
   );
@@ -39,7 +53,7 @@ const isBookingAllDay = (start: Date, end: Date): boolean => {
   return end.valueOf() - start.valueOf() == dayInMilliseconds;
 };
 
-function EventTimeComponent({ start, end }: { start: Date; end: Date }) {
+function EventTimeComponent({ start, end }: { start: Date; end: Date; }) {
   return isBookingAllDay(start, end) ? (
     <div className='eventTime'>All Day</div>
   ) : (
@@ -53,11 +67,14 @@ function EventTimeComponent({ start, end }: { start: Date; end: Date }) {
 const formatTime = (date: Date | number) => {
   return new Intl.DateTimeFormat('en-US', {
     timeStyle: 'short',
-    // timeZone: 'Australia/Sydney',
   }).format(date);
 };
 
 const getEventStyle = (event: AppBooking) => {
+  // Default to Floor 1 if nothing is found
+  if (event.floor === undefined) {
+    return { backgroundColor: COLOR_USAGES.FLOOR_1 };
+  }
   if (event.floor.includes('1')) {
     return { backgroundColor: COLOR_USAGES.FLOOR_1 };
   }
